@@ -10,4 +10,13 @@ class User{
 
   User(this.id, this.username, this.password, this.liked, this.favorited, this.created);
 
+  User.defaultUser(){
+    id = -1;
+    username = "defaultUser";
+    password = "defaultPassword";
+    liked = [];
+    favorited = [];
+    created = [];
+  }
+
 }
