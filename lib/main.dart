@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'pages/home.dart';
+import 'pages/login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,9 +19,10 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      initialRoute: "/",
+      initialRoute: "/home",
       routes: {
-        "/": (context) => const Home(title: "MemoShare"),
+        "/home": (context) => const Home(title: "MemoShare"),
+        "/login": (context) => const Login(),
       },
     );
   }
