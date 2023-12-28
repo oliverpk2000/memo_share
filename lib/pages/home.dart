@@ -17,6 +17,13 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: const Text("MemoShare"),
       ),
+      body: Center(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          print("added entry lmoa");
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
