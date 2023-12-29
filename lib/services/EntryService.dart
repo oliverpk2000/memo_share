@@ -62,4 +62,37 @@ class EntryService {
       throw "Something went wrong while searching for ID: $id";
     }
   }
+
+  Future<void> deleteEntry(int id) async {
+    var url = Uri.parse("$pathToDB/$id.json");
+    var response = await http.delete(url);
+
+    if (response.statusCode == 200) {
+      print("Entry Successdully deleted");
+
+    } else {
+      throw "Error while deleting ID: $id";
+    }
+  }
+
+  Future<void> updateEntry(Entry entry, int id) async {
+    var url = Uri.parse("$pathToDB/entries/$id.json}");
+
+    try {
+      var response = await http.patch(
+          url,
+          body: json.encode(entry.toJson())
+      );
+
+      if (response.statusCode == 200) {
+        print("Change was successful");
+
+      } else {
+        throw "Something went wrong while patching entry wih ID: $id";
+      }
+
+    } catch (error) {
+      throw "Error while patching an entry with ID: $id";
+    }
+  }
 }

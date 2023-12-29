@@ -8,16 +8,15 @@ class Entry {
 
   static int idCount = 1;
 
-  Entry({required this.title, required this.content, required this.tags, required this.private, required this.imageUrls}) {
+  Entry({required this.id, required this.title, required this.content, required this.tags, required this.private, required this.imageUrls});
+
+  Entry.withNewID({required this.title, required this.content, required this.tags, required this.private, required this.imageUrls}) {
     id = idCount;
     idCount++;
   }
 
-  Entry.includeId({required this.id, required this.title, required this.content, required this.tags, required this.private, required this.imageUrls});
-
-
   factory Entry.fromJSON(Map<String, dynamic> jsonMap) {
-    return Entry.includeId(id: jsonMap['id'],
+    return Entry(id: jsonMap['id'],
         title: jsonMap['title'],
         content: jsonMap['content'],
         tags: jsonMap['tags'],
