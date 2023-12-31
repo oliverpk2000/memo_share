@@ -41,9 +41,7 @@ class EntryService {
 
       for (var element in data) {
         if (element != null) {
-          String elementJSON = json.encode(element);
-          entries.add(Entry.fromJSON(json.decode(elementJSON)));
-
+          entries.add(Entry.fromJSON(Map.castFrom(element)));
         }
       }
 
@@ -58,7 +56,6 @@ class EntryService {
     var response = await http.get(url);
 
     if (response.statusCode == 200) {
-      print(response.body);
       return Entry.fromJSON(json.decode(response.body));
     } else {
       throw "Something went wrong while searching for ID: $id";
@@ -66,6 +63,13 @@ class EntryService {
   }
 
   Future<void> deleteEntry(int id) async {
+    try {
+      await getEntry(id);
+
+    } catch (error) {
+      throw "ID does not exist $id";
+    }
+
     var url = Uri.parse("$pathToDB/entries/$id.json");
     var response = await http.delete(url);
 
@@ -77,6 +81,13 @@ class EntryService {
   }
 
   Future<void> updateEntry(Entry entry, int id) async {
+    try {
+      await getEntry(id);
+
+    } catch (error) {
+      throw "ID does not exist $id";
+    }
+
     entry.id = id;
     addEntry(entry);
   }

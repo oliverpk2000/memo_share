@@ -30,7 +30,7 @@ class Test extends StatelessWidget {
 
           FloatingActionButton(
             onPressed: () async {
-              var entry = Entry(id: 3, title:"444444", content: "ertzui", tags: [], private: true, imageUrls: []);
+              var entry = Entry(id: 3, title:"444444", content: "ertzui", tags: ["ssss", "dddd"], private: true, imageUrls: []);
               await EntryService().updateEntry(entry, 11);
             },
             child: const Text("Change"),
@@ -38,7 +38,7 @@ class Test extends StatelessWidget {
 
           FloatingActionButton(
             onPressed: () async {
-              EntryService().deleteEntry(25);
+              EntryService().deleteEntry(11);
             },
             child: const Text("Delete"),
           ),

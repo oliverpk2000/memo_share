@@ -6,7 +6,7 @@ class Entry {
   late bool private;
   late List<String> imageUrls;
 
-  static int idCount = 1;
+  static int idCount = 1; //TODO shared prefernces abspeichern
 
   Entry({required this.id, required this.title, required this.content, required this.tags, required this.private, required this.imageUrls});
 
@@ -16,15 +16,15 @@ class Entry {
   }
 
   factory Entry.fromJSON(Map<String, dynamic> jsonMap) {
-    List<String> tags = jsonMap['tags'] ?? [];
-    List<String> imageUrls = jsonMap['imageUrls'] ?? [];
+    List<dynamic> tags = jsonMap['tags'] ?? [];
+    List<dynamic> imageUrls = jsonMap['imageUrls'] ?? [];
 
     return Entry(id: jsonMap['id'],
         title: jsonMap['title'],
         content: jsonMap['content'],
-        tags: tags,
+        tags: List.castFrom(tags),
         private: jsonMap['private'],
-        imageUrls: imageUrls,
+        imageUrls: List.castFrom(imageUrls),
     );
   }
 
