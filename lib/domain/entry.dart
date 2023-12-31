@@ -16,12 +16,15 @@ class Entry {
   }
 
   factory Entry.fromJSON(Map<String, dynamic> jsonMap) {
+    List<String> tags = jsonMap['tags'] ?? [];
+    List<String> imageUrls = jsonMap['imageUrls'] ?? [];
+
     return Entry(id: jsonMap['id'],
         title: jsonMap['title'],
         content: jsonMap['content'],
-        tags: jsonMap['tags'],
+        tags: tags,
         private: jsonMap['private'],
-        imageUrls: jsonMap['imageUrls']
+        imageUrls: imageUrls,
     );
   }
 

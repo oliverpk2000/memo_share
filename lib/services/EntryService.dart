@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:memo_share/domain/entry.dart';
 
@@ -11,13 +12,12 @@ class EntryService {
 
     try {
       var response = await http.put(
-          url,
-          body: json.encode(entry.toJson()),
+        url,
+        body: json.encode(entry.toJson()),
       );
 
       if (response.statusCode == 200) {
         print("New Entry successfully created!");
-
       } else {
         throw "Something went wrong: Statuscode: ${response.statusCode}, Message: ${response.body}";
       }
@@ -38,16 +38,21 @@ class EntryService {
     var response = await http.get(url);
 
     if (response.statusCode == 200) {
-      Map<String, dynamic> data = json.decode(response.body);
-      data.forEach((key, value) {
-        entries.add(Entry.fromJSON(value));
-      });
+      final List<dynamic> data = json.decode(response.body);
+
+      for (var element in data) {
+        if (element != null) {
+          String elementString = element.toString();
+          print(elementString);
+          dynamic decodedValues = json.decode(elementString);
+          print(decodedValues);
+          print(decodedValues.runtimeType);
+        }
+      }
 
       return entries;
-
     } else {
       throw "Something went wrong while getting all Entries";
-
     }
   }
 
@@ -57,42 +62,24 @@ class EntryService {
 
     if (response.statusCode == 200) {
       return Entry.fromJSON(json.decode(response.body));
-
     } else {
       throw "Something went wrong while searching for ID: $id";
     }
   }
 
   Future<void> deleteEntry(int id) async {
-    var url = Uri.parse("$pathToDB/$id.json");
+    var url = Uri.parse("$pathToDB/entries/$id.json");
     var response = await http.delete(url);
 
     if (response.statusCode == 200) {
       print("Entry Successdully deleted");
-
     } else {
       throw "Error while deleting ID: $id";
     }
   }
 
   Future<void> updateEntry(Entry entry, int id) async {
-    var url = Uri.parse("$pathToDB/entries/$id.json}");
-
-    try {
-      var response = await http.patch(
-          url,
-          body: json.encode(entry.toJson())
-      );
-
-      if (response.statusCode == 200) {
-        print("Change was successful");
-
-      } else {
-        throw "Something went wrong while patching entry wih ID: $id";
-      }
-
-    } catch (error) {
-      throw "Error while patching an entry with ID: $id";
-    }
+    entry.id = id;
+    addEntry(entry);
   }
 }
