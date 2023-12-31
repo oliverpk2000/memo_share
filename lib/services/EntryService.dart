@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:memo_share/domain/entry.dart';
 
@@ -42,11 +41,9 @@ class EntryService {
 
       for (var element in data) {
         if (element != null) {
-          String elementString = element.toString();
-          print(elementString);
-          dynamic decodedValues = json.decode(elementString);
-          print(decodedValues);
-          print(decodedValues.runtimeType);
+          String elementJSON = json.encode(element);
+          entries.add(Entry.fromJSON(json.decode(elementJSON)));
+
         }
       }
 
@@ -61,6 +58,7 @@ class EntryService {
     var response = await http.get(url);
 
     if (response.statusCode == 200) {
+      print(response.body);
       return Entry.fromJSON(json.decode(response.body));
     } else {
       throw "Something went wrong while searching for ID: $id";
