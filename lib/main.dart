@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:memo_share/pages/EntryPage.dart';
 import 'package:memo_share/pages/test.dart';
 
 import 'domain/user.dart';
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -25,6 +27,7 @@ class MyApp extends StatelessWidget {
       routes: {
         "/home": (context) =>  Home(title:"MemoShare", user: User.defaultUser()),
         "/login": (context) => const Login(),
+        "/entry": (context) => const EntryPage(title: "Entry"),
         "/test": (context) => const Test(),
       },
     );
