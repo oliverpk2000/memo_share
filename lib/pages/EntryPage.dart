@@ -17,10 +17,10 @@ class _EntryPageState extends State<EntryPage> {
 
 
   Future<void> getEntry(Map<String, int> data) async {
-    int id = data['id']!; //Arguments are passed in home
+    int id = data['id']!; //Arguments are passed from home
+    //TODO zum Profil wenn von wem anderen
 
     try {
-      print(id);
       EntryService()
           .getEntry(id)
           .then((value) {
@@ -30,7 +30,6 @@ class _EntryPageState extends State<EntryPage> {
               loading = false;
             });
 
-            print(entry);
       });
 
     } catch (error) {
@@ -53,7 +52,7 @@ class _EntryPageState extends State<EntryPage> {
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.pink,
-            title: const Text("Dein Eintrag"),
+            title: const Text("Sieh dir diesen Eintrag genauer an"),
             centerTitle: true,
             actions: [
               IconButton(
@@ -68,26 +67,31 @@ class _EntryPageState extends State<EntryPage> {
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     });
                   },
+
                   icon: const Icon(
                     Icons.info,
                     color: Colors.white,
                   )),
+
               IconButton(
                   //Delete
                   onPressed: () async {
                     Navigator.pop(context);
                     await EntryService().deleteEntry(entry.id);
                   },
+
                   icon: const Icon(
                     Icons.delete,
                     color: Colors.white,
                   )),
+
               IconButton(
                   //Updating
                   onPressed: () {
                     //TODO implement update
                     //var newEntry = await Navigator.pushnamed("/changeForm, Entry.toJson ...");
                   },
+
                   icon: const Icon(
                     Icons.refresh,
                     color: Colors.white,
@@ -97,21 +101,44 @@ class _EntryPageState extends State<EntryPage> {
           body: Center(
             child: Column(
               children: <Widget>[
-                Text(entry.title),
-                Text(entry.content),
-                const Text("Your Tags:"),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(
+                      entry.title,
+                  style: const TextStyle(
+                    fontSize: 40.0,
+                    fontWeight: FontWeight.bold
+                  ),),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 50.0),
+                  child: Text(entry.content +  "mckmaaaaaaaaaaaaskssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssdömcksdmcksdmköcmcmsdömdökmcködsmökdvmdkvömdvmdvmsdövmdövmlövmslvmsdmvlsdmvlsmvlmvlösmvlösdmvlsmvlsmlvdsmlmvlsmlvmdslövmslvmldmvlsdmvldmvödsmvlösmvölmlsöd"),
+                ),
+
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 60.0),
+                  child: Text("Tags für diesen Eintrag", style: TextStyle(fontSize: 30),),
+                ),
+
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: entry.tags
                         .map((e) => Padding(
-                              padding: const EdgeInsets.only(right: 10.0),
-                              child: Text(e),
+                              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                              child: Text(e, style: TextStyle(backgroundColor: Colors.grey[400]),),
                             ))
                         .toList(),
                   ),
                 ),
-                const Text("Your Images"),
+
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 30),
+                  child: Text("Angefügte Bilder:", style: TextStyle(fontSize: 30),),
+                ),
+
                   SizedBox(
                     width: entry.imageUrls.length * 300,
                     height: entry.imageUrls.length * 300,
