@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:memo_share/domain/entry.dart';
 import 'package:memo_share/services/EntryService.dart';
@@ -20,7 +18,13 @@ class Test extends StatelessWidget {
                   content: "Dein Langer Text hihihi",
                   tags: ["Leben", "Hobbys"],
                   private: false,
-                  imageUrls: ["https://picsum.photos/250?image=9"]);
+                  imageUrls: [
+                    "https://picsum.photos/250?image=9",
+                    "https://picsum.photos/250?image=9"
+                  ],
+                  creatorId: -1,
+                  created: DateTime.now());
+
               EntryService().addEntry(entry);
             },
             child: const Text("Add"),
@@ -55,7 +59,6 @@ class Test extends StatelessWidget {
             },
             child: const Text("Entry 1"),
           ),
-
           Image.network("https://picsum.photos/250?image=9"),
         ],
       ),

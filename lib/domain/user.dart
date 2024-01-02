@@ -1,12 +1,10 @@
-import 'package:memo_share/domain/entry.dart';
-
 class User{
   late int id;
   late String username;
-  late String password;
-  late List<Entry> liked;
-  late List<Entry> favorited;
-  late List<Entry> created;
+  late String password;       //Lists with IDs
+  late List<int> liked;
+  late List<int> favorited;
+  late List<int> created;
 
   User(this.id, this.username, this.password, this.liked, this.favorited, this.created);
 
@@ -14,9 +12,9 @@ class User{
     id = -1;
     username = "defaultUser";
     password = "defaultPassword";
-    liked = [];
-    favorited = [];
-    created = [];
+    liked = [1, 2, 3];
+    favorited = [4, 5, 6];
+    created = [7, 8, 9];
   }
 
 }

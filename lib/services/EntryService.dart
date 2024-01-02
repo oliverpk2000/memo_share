@@ -91,4 +91,16 @@ class EntryService {
     entry.id = id;
     addEntry(entry);
   }
+
+  Future<List<Entry>> getEntriesToId(List<int> idList) async {
+    var allEntries = await getAll();
+    return allEntries.where((element) => idList.contains(element.id)).toList();
+  }
+
+  Future<List<Entry>> getPublic() async {
+    var allEntries = await getAll();
+    return allEntries.where((element) => !element.private).toList();
+  }
+
+  //TODO created, liked, favorite
 }

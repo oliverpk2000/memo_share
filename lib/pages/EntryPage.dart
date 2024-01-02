@@ -15,7 +15,7 @@ class _EntryPageState extends State<EntryPage> {
   late Entry entry = Entry.defaultEntry;
   var loading = true;
 
-  Future<void> getEntry(Map<String, int> data) async {
+  void getEntry(Map<String, int> data) {
     int id = data['id']!; //Arguments are passed from home
     //TODO zum Profil wenn von wem anderen
 
@@ -55,7 +55,7 @@ class _EntryPageState extends State<EntryPage> {
                     var visibility = entry.private ? "privat" : "öffentlich";
                     var snackBar = SnackBar(
                         duration: const Duration(seconds: 2),
-                        content: Text("Dieser Eintrag ist $visibility"));
+                        content: Text("Dieser Eintrag ist $visibility und wurde am ${entry.created.day}.${entry.created.month}.${entry.created.year}"));
 
                     setState(() {
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -82,7 +82,7 @@ class _EntryPageState extends State<EntryPage> {
                     //var newEntry = await Navigator.pushnamed("/changeForm, Entry.toJson ...");
                   },
                   icon: const Icon(
-                    Icons.refresh,
+                    Icons.edit,
                     color: Colors.white,
                   )),
             ],
@@ -137,16 +137,18 @@ class _EntryPageState extends State<EntryPage> {
                 ),
                 entry.imageUrls.isEmpty
                     ? const Text("Keine Bilder zu diesem Beitrag hinzugefügt")
-                    : SizedBox(
-                        width: entry.imageUrls.length * 300,
-                        height: entry.imageUrls.length * 300,
-                        child: ListView.builder(
-                          itemCount: entry.imageUrls.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Image.network(entry.imageUrls[index]);
-                          },
+                    : Expanded(
+                      child: SizedBox(
+                          width: entry.imageUrls.length * 300,
+                          height: entry.imageUrls.length * 300,
+                          child: ListView.builder(
+                            itemCount: entry.imageUrls.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Image.network(entry.imageUrls[index]);
+                            },
+                          ),
                         ),
-                      ),
+                    ),
               ],
             ),
           ),
