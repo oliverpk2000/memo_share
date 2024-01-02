@@ -115,7 +115,7 @@ class _EntryEditorState extends State<EntryEditor> {
           ),
           TextButton(onPressed: () {
             setState(() {
-              entry = Entry(id:id, title:title, content:content, tags:tags, private:private, imageUrls:imageUrls);
+              entry = Entry.withNewID(title:title, content:content, tags:tags, private:private, imageUrls:imageUrls);
 
               entryService.addEntry(entry!);
             });
