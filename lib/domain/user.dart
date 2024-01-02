@@ -1,4 +1,4 @@
-import 'dart:html';
+import 'package:memo_share/domain/entry.dart';
 
 class User{
   late int id;
