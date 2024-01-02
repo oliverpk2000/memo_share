@@ -1,4 +1,4 @@
-class Entry{
+class Entry {
   late int id;
   late String title;
   late String content;
@@ -6,5 +6,57 @@ class Entry{
   late bool private;
   late List<String> imageUrls;
 
-  Entry(this.id, this.title, this.content, this.tags, this.private, this.imageUrls);
+  static int idCount = 1; //TODO shared prefernces abspeichern
+
+  Entry({required this.id, required this.title, required this.content, required this.tags, required this.private, required this.imageUrls});
+
+  Entry.withNewID({required this.title, required this.content, required this.tags, required this.private, required this.imageUrls}) {
+    id = idCount;
+    idCount++;
+  }
+
+  factory Entry.fromJSON(Map<String, dynamic> jsonMap) {
+    List<dynamic> tags = jsonMap['tags'] ?? [];
+    List<dynamic> imageUrls = jsonMap['imageUrls'] ?? [];
+
+    return Entry(id: jsonMap['id'],
+        title: jsonMap['title'],
+        content: jsonMap['content'],
+        tags: List.castFrom(tags),
+        private: jsonMap['private'],
+        imageUrls: List.castFrom(imageUrls),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id' : id,
+      'title' : title,
+      'content' : content,
+      'tags' : tags,
+      'private': private,
+      'imageUrls': imageUrls
+    };
+  }
+
+  @override
+  int get hashCode => id.hashCode;
+
+  @override
+  bool operator ==(Object other) {
+    var entry = other as Entry;
+    return entry.id == id;
+  }
+
+  @override
+  String toString() {
+    return """{
+      id : $id,
+      title : $title,
+      content : $content,
+      tags : $tags,
+      private: $private,
+      imageUrls: $imageUrls
+    }""";
+  }
 }

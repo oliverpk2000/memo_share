@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:memo_share/pages/test.dart';
 
 import 'domain/user.dart';
 import 'pages/home.dart';
@@ -20,10 +21,11 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      initialRoute: "/home",
+      initialRoute: "/test",
       routes: {
         "/home": (context) =>  Home(title:"MemoShare", user: User.defaultUser()),
         "/login": (context) => const Login(),
+        "/test": (context) => const Test(),
       },
     );
   }
