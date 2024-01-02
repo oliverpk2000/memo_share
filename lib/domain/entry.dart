@@ -6,6 +6,7 @@ class Entry {
   late bool private;
   late List<String> imageUrls;
 
+
   static int idCount = 1; //TODO shared prefernces abspeichern
 
   Entry({required this.id, required this.title, required this.content, required this.tags, required this.private, required this.imageUrls});
