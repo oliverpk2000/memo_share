@@ -100,8 +100,7 @@ class _EntryPageState extends State<EntryPage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 50.0),
-                  child: Text(entry.content +
-                      "mckmaaaaaaaaaaaaskssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssdömcksdmcksdmköcmcmsdömdökmcködsmökdvmdkvömdvmdvmsdövmdövmlövmslvmsdmvlsdmvlsmvlmvlösmvlösdmvlsmvlsmlvdsmlmvlsmlvmdslövmslvmldmvlsdmvldmvödsmvlösmvölmlsöd"),
+                  child: Text(entry.content),
                 ),
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 60.0),
