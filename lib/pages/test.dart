@@ -13,14 +13,20 @@ class Test extends StatelessWidget {
       body: Column(
         children: [
           FloatingActionButton(
-              onPressed: () async {
-                var entry = Entry.withNewID(title:"3333333", content: "ertzui", tags: [], private: true, imageUrls: []);
-                EntryService().addEntry(entry);
+            heroTag: "add",
+            onPressed: () async {
+              var entry = Entry.withNewID(
+                  title: "Mein Eintrag",
+                  content: "Dein Langer Text hihihi",
+                  tags: ["Leben", "Hobbys"],
+                  private: false,
+                  imageUrls: ["https://picsum.photos/250?image=9"]);
+              EntryService().addEntry(entry);
             },
             child: const Text("Add"),
           ),
 
-          FloatingActionButton(
+          /* FloatingActionButton(
             onPressed: () async {
               var back = await EntryService().getAll();
               print(back);
@@ -38,13 +44,20 @@ class Test extends StatelessWidget {
 
           FloatingActionButton(
             onPressed: () async {
-              EntryService().deleteEntry(11);
+              await EntryService().deleteEntry(11);
             },
             child: const Text("Delete"),
+          ),*/
+
+          FloatingActionButton(
+            onPressed: () {
+              Navigator.pushNamed(context, "/entry", arguments: {"id": 11});
+            },
+            child: const Text("Entry 1"),
           ),
+
+          Image.network("https://picsum.photos/250?image=9"),
         ],
-
-
       ),
     );
   }
