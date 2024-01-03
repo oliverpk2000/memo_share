@@ -15,15 +15,13 @@ class EntryEditor extends StatefulWidget {
 }
 
 class _EntryEditorState extends State<EntryEditor> {
-  late int id = entry!.id;
-  late String title = "";
-  late String content = "";
-  late List<String> tags;
-  late bool private = false;
-  late List<String> imageUrls;
+  String title = "";
+  String content = "";
+  List<String> tags = [];
+  bool private = false;
+  List<String> imageUrls = [];
   late Entry? entry =  ModalRoute.of(context)!.settings.arguments as Entry?;
   EntryService entryService = EntryService();
-  bool buttonEnabeled = false;
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +113,7 @@ class _EntryEditorState extends State<EntryEditor> {
             padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
           ),
           TextButton(
-              onPressed: buttonEnabeled ? enableButton : null,
+              onPressed:  enableButton()? null : () => {entryService.addEntry(entry!)},
            child: const Text("save"))
         ],
       ),
@@ -123,13 +121,15 @@ class _EntryEditorState extends State<EntryEditor> {
     );
   }
 
-  void enableButton() {
-    entry = Entry.withNewID(title: title, content: content, tags: tags, private: private, imageUrls: imageUrls);
+  bool enableButton() {
+    setState(() {
+      entry = Entry.withNewID(title: title, content: content, tags: tags, private: private, imageUrls: imageUrls);
+    });
+
     if (entry!.title.isEmpty && entry!.content.isEmpty) {
-      setState(() {
-        buttonEnabeled = true;
-      });
-      entryService.addEntry(entry!);
+        return true;
+    } else {
+      return false;
     }
   }
 }
