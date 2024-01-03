@@ -26,12 +26,14 @@ class _CreatedTileState extends State<CreatedTile> {
                 onPressed: () {
                   widget.deleteFunction(widget.entry.id);
                 },
+                tooltip: "Delete this Entry",
                 icon: const Icon(Icons.delete)),
             IconButton(
               onPressed: () {
                 print('unfinished lmoa');
                 //TODO: link to ertl's entry editor
               },
+              tooltip: "Edit this entry",
               icon: const Icon(Icons.edit),
             ),
           ],

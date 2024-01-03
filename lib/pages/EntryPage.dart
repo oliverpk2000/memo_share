@@ -61,6 +61,7 @@ class _EntryPageState extends State<EntryPage> {
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     });
                   },
+                  tooltip: "Details",
                   icon: const Icon(
                     Icons.info,
                     color: Colors.white,
@@ -68,9 +69,10 @@ class _EntryPageState extends State<EntryPage> {
               IconButton(
                   //Updating
                   onPressed: () {
-                    //TODO implement update
+                    //TODO link to editor
                     //var newEntry = await Navigator.pushnamed("/changeForm, Entry.toJson ...");
                   },
+                  tooltip: "Bearbeiten",
                   icon: const Icon(
                     Icons.edit,
                     color: Colors.white,
