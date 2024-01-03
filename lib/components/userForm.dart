@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../domain/user.dart';
-
 class UserForm extends StatefulWidget {
   const UserForm({super.key, required this.loginUser});
 
@@ -21,16 +19,28 @@ class _UserFormState extends State<UserForm> {
       child: Column(
         children: [
           const Text('username:'),
-          TextField(autofocus: true,
-            onChanged: (value){
-              username = value;
+          TextField(
+            autofocus: true,
+            onChanged: (value) {
+              setState(() {
+                username = value;
+              });
             },
           ),
           const Text('password:'),
-          TextField(autofocus: true,
-          onChanged: (value){
-            password = value;
-          },)
+          TextField(
+            autofocus: true,
+            onChanged: (value) {
+              setState(() {
+                password = value;
+              });
+            },
+          ),
+          TextButton(
+              onPressed: (username.isEmpty || password.isEmpty)
+                  ? null
+                  : () => {widget.loginUser(username, password)},
+              child: const Text("submit"))
         ],
       ),
     );
