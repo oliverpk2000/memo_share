@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:memo_share/components/entryEditor.dart';
 import 'package:memo_share/pages/EntryPage.dart';
 import 'package:memo_share/pages/register.dart';
 import 'package:memo_share/pages/test.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
         "/register": (context) => Register(),
         "/entry": (context) => EntryPage(title: "Entry"),
         "/test": (context) => Test(),
+        "/editor": (context) => EntryEditor(),
       },
     );
   }
