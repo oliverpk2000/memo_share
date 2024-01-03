@@ -114,6 +114,43 @@ class UserService {
     }
   }
 
+  Future<void> deleteCreated(int entryId, int userId) async {
+    try {
+      var user = await getUser(userId);
+      user.created.remove(entryId);
+
+      if (user.favorited.contains(entryId)) {
+        user.favorited.remove(entryId);
+      }
+
+      await registerUser(user, checkDoubleNames: false);
+    } catch (error) {
+      throw "User not found: $userId";
+    }
+  }
+
+  Future<void> deleteFavorite(int entryId, int userId) async {
+    try {
+      var user = await getUser(userId);
+      user.favorited.remove(entryId);
+
+      await registerUser(user, checkDoubleNames: false);
+    } catch (error) {
+      throw "User not found: $userId";
+    }
+  }
+
+  Future<void> deleteLiked(int entryId, int userId) async {
+    try {
+      var user = await getUser(userId);
+      user.liked.remove(entryId);
+
+      await registerUser(user, checkDoubleNames: false);
+    } catch (error) {
+      throw "User not found: $userId";
+    }
+  }
+
   Future<void> changeUsername(String username, int userId ) async {
     try {
       var user = await getUser(userId);

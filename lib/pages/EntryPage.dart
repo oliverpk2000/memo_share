@@ -66,16 +66,6 @@ class _EntryPageState extends State<EntryPage> {
                     color: Colors.white,
                   )),
               IconButton(
-                  //Delete
-                  onPressed: () async {
-                    Navigator.pop(context);
-                    await EntryService().deleteEntry(entry.id);
-                  },
-                  icon: const Icon(
-                    Icons.delete,
-                    color: Colors.white,
-                  )),
-              IconButton(
                   //Updating
                   onPressed: () {
                     //TODO implement update
