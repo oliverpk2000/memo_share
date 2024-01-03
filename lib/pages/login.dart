@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:memo_share/components/userForm.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -14,13 +15,10 @@ class _LoginState extends State<Login> {
       appBar: AppBar(
         title: Text("Login to MemoShare"),
       ),
-      body: Center(
-        child: Column(
-          children: [
-            
-          ],
-        ),
-      ),
+      body: UserForm(loginUser: (username, password) async{
+        print(username);
+        print(password);
+      },)
     );
   }
 }
