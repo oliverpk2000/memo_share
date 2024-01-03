@@ -23,6 +23,7 @@ class _EntryEditorState extends State<EntryEditor> {
   late List<String> imageUrls;
   late Entry? entry =  ModalRoute.of(context)!.settings.arguments as Entry?;
   EntryService entryService = EntryService();
+  bool buttonEnabeled = false;
 
   @override
   Widget build(BuildContext context) {
@@ -113,16 +114,22 @@ class _EntryEditorState extends State<EntryEditor> {
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
           ),
-          TextButton(onPressed: () {
-            setState(() {
-              entry = Entry.withNewID(title:title, content:content, tags:tags, private:private, imageUrls:imageUrls);
-
-              entryService.addEntry(entry!);
-            });
-          }, child: const Text("save"))
+          TextButton(
+              onPressed: buttonEnabeled ? enableButton : null,
+           child: const Text("save"))
         ],
       ),
     ),
     );
+  }
+
+  void enableButton() {
+    entry = Entry.withNewID(title: title, content: content, tags: tags, private: private, imageUrls: imageUrls);
+    if (entry!.title.isEmpty && entry!.content.isEmpty) {
+      setState(() {
+        buttonEnabeled = true;
+      });
+      entryService.addEntry(entry!);
+    }
   }
 }
