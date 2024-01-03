@@ -53,12 +53,18 @@ class EntryService {
 
   Future<Entry> getEntry(int id) async {
     var url = Uri.parse("$pathToDB/entries/$id.json");
-    var response = await http.get(url);
 
-    if (response.statusCode == 200) {
-      return Entry.fromJSON(json.decode(response.body));
-    } else {
+    try {
+      var response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        return Entry.fromJSON(json.decode(response.body));
+      }
+
       throw "Something went wrong while searching for ID: $id";
+
+    } catch (error) {
+      throw "ID $id not found";
     }
   }
 
@@ -102,5 +108,5 @@ class EntryService {
     return allEntries.where((element) => !element.private).toList();
   }
 
-  //TODO created, liked, favorite
+  //TODO sort/filter
 }
