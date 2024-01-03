@@ -18,7 +18,7 @@ class EntryService {
       if (response.statusCode == 200) {
         print("New Entry successfully created!");
       } else {
-        throw "Something went wrong: Statuscode: ${response.statusCode}, Message: ${response.body}";
+        throw "Something went wrong while creating Entry: $entry";
       }
     } catch (error) {
       throw "Error while creating: $error";
