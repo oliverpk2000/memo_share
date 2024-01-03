@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:memo_share/components/entryEditor.dart';
+import 'package:memo_share/pages/EntryPage.dart';
+import 'package:memo_share/pages/register.dart';
 import 'package:memo_share/pages/test.dart';
 
 import 'domain/user.dart';
@@ -17,18 +18,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      initialRoute: "/test",
+      initialRoute: "/register",
       routes: {
         "/home": (context) =>  Home(title:"MemoShare", user: User.defaultUser()),
-        "/login": (context) => const Login(),
-        "/test": (context) => const Test(),
-        "/editor": (context) => const EntryEditor(),
+        "/login": (context) => Login(),
+        "/register": (context) => Register(),
+        "/entry": (context) => EntryPage(title: "Entry"),
+        "/test": (context) => Test(),
       },
     );
   }

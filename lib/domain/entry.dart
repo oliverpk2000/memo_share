@@ -6,8 +6,8 @@ class Entry {
   late bool private;
   late List<String> imageUrls;
 
-
-  static int idCount = 1; //TODO shared prefernces abspeichern
+  static int idCount = 1; //TODO shared preferences abspeichern
+  static Entry defaultEntry = Entry(id: 0, title: "", content: "", tags: [], private: false, imageUrls: []);
 
   Entry({required this.id, required this.title, required this.content, required this.tags, required this.private, required this.imageUrls});
 
@@ -44,7 +44,7 @@ class Entry {
   int get hashCode => id.hashCode;
 
   @override
-  bool operator ==(Object other) {
+  bool operator ==(Object other) {    //Equals
     var entry = other as Entry;
     return entry.id == id;
   }
