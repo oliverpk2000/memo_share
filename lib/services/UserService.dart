@@ -4,7 +4,7 @@ import 'dart:convert';
 
 class UserService {
   final String pathToDB =
-      "https://memoshare-bde3c-default-rtdb.europe-west1.firebasedatabase.app/";
+      "https://memoshare-bde3c-default-rtdb.europe-west1.firebasedatabase.app";
 
   Future<List<User>> getAll() async {
     List<User> users = [];
@@ -12,7 +12,7 @@ class UserService {
     var response = await http.get(url);
 
     if (response.statusCode == 200) {
-      final List<dynamic> data = json.decode(response.body);
+      final List<dynamic> data = json.decode(response.body) ?? [];
 
       for (var element in data) {
         if (element != null) {
@@ -28,6 +28,7 @@ class UserService {
 
   Future<User> getUser(int id) async {
     var url = Uri.parse("$pathToDB/users/$id.json");
+
 
     try {
       var response = await http.get(url);
@@ -54,7 +55,7 @@ class UserService {
     }
 
     try {
-      var response = await http.post(
+      var response = await http.put(
           url,
           body: json.encode(user.toJSON()));
 

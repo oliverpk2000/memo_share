@@ -63,6 +63,7 @@ class _EntryListState extends State<EntryList> {
                               entry: entry,
                               deleteFunction: deleteCreated,
                             );
+                            //TODO liked, public, favorite
                           }
 
                           return Placeholder();

@@ -9,7 +9,7 @@ class User {
   static int idCount = 1;
 
   User.defaultUser() {
-    id = -1;
+    id = 0;
     username = "defaultUser";
     password = "defaultPassword";
     liked = [1, 2, 3];

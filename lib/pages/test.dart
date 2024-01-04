@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:memo_share/domain/entry.dart';
 import 'package:memo_share/services/EntryService.dart';
+import 'package:memo_share/services/UserService.dart';
+
+import '../domain/user.dart';
 
 class Test extends StatelessWidget {
   const Test({super.key});
@@ -30,36 +33,15 @@ class Test extends StatelessWidget {
             child: const Text("Add"),
           ),
 
-          /* FloatingActionButton(
+          FloatingActionButton(
+            heroTag: "addUser",
             onPressed: () async {
-              var back = await EntryService().getAll();
-              print(back);
+              //UserService().registerUser(User.defaultUser());
+              UserService().changePassword("1234", 0);
             },
-            child: const Text("Get"),
+            child: const Text("Add"),
           ),
 
-          FloatingActionButton(
-            onPressed: () async {
-              var entry = Entry(id: 3, title:"444444", content: "ertzui", tags: ["ssss", "dddd"], private: true, imageUrls: []);
-              await EntryService().updateEntry(entry, 11);
-            },
-            child: const Text("Change"),
-          ),
-
-          FloatingActionButton(
-            onPressed: () async {
-              await EntryService().deleteEntry(11);
-            },
-            child: const Text("Delete"),
-          ),*/
-
-          FloatingActionButton(
-            onPressed: () {
-              Navigator.pushNamed(context, "/entry", arguments: {"id": 11});
-            },
-            child: const Text("Entry 1"),
-          ),
-          Image.network("https://picsum.photos/250?image=9"),
         ],
       ),
     );
