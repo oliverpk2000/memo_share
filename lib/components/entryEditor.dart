@@ -1,11 +1,8 @@
-import 'dart:html';
-import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:memo_share/domain/entry.dart';
 import 'package:memo_share/services/EntryService.dart';
+import 'package:memo_share/services/UserService.dart';
 
 class EntryEditor extends StatefulWidget {
   const EntryEditor({super.key});
@@ -20,7 +17,9 @@ class _EntryEditorState extends State<EntryEditor> {
   List<String> tags = [];
   bool private = false;
   List<String> imageUrls = [];
-  late Entry? entry =  ModalRoute.of(context)!.settings.arguments as Entry?;
+  late Map<String, dynamic> pageData = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+  late Entry? entry =  pageData["entry"] as Entry?;
+  late int uid = pageData["uid"];
   EntryService entryService = EntryService();
 
   @override
@@ -113,7 +112,11 @@ class _EntryEditorState extends State<EntryEditor> {
             padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
           ),
           TextButton(
-              onPressed:  enableButton()? null : () => {entryService.addEntry(entry!)},
+              onPressed:  enableButton()? null : () async {
+                await entryService.addEntry(entry!);
+                UserService().addToCreated(entry!.id, uid)
+                .whenComplete(() => Navigator.pop(context));
+              },
            child: const Text("save"))
         ],
       ),
@@ -123,7 +126,7 @@ class _EntryEditorState extends State<EntryEditor> {
 
   bool enableButton() {
     setState(() {
-      entry = Entry.withNewID(title: title, content: content, tags: tags, private: private, imageUrls: imageUrls);
+      entry = Entry.withNewID(title: title, content: content, tags: tags, private: private, imageUrls: imageUrls, created: DateTime.now(), creatorId: uid);
     });
 
     if (entry!.title.isEmpty && entry!.content.isEmpty) {

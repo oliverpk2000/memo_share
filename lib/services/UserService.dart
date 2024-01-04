@@ -29,7 +29,6 @@ class UserService {
   Future<User> getUser(int id) async {
     var url = Uri.parse("$pathToDB/users/$id.json");
 
-
     try {
       var response = await http.get(url);
 

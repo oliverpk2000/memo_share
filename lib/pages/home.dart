@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:memo_share/components/entryList.dart';
 import 'package:memo_share/domain/user.dart';
@@ -5,9 +7,9 @@ import 'package:memo_share/domain/user.dart';
 import '../domain/Modes.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key, required String title, required this.user});
+  Home({super.key, required String title});
 
-  final User user;
+  late User user = User.defaultUser();
 
   @override
   State<Home> createState() => _HomeState();
@@ -21,6 +23,21 @@ class _HomeState extends State<Home> {
         title: const Text("MemoShare-Home"),
         backgroundColor: Colors.lightBlue,
         centerTitle: true,
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, "/favorites", arguments: {"idList": widget.user.favorited, "uid" : widget.user.id});
+              },
+              tooltip: "Favoriten",
+              icon: const Icon(Icons.star, color: Colors.orange,)),
+
+          IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, "/liked", arguments: {"idList": widget.user.favorited, "uid" : widget.user.id});
+              },
+              tooltip: "Geliked",
+              icon: const Icon(Icons.favorite, color: Colors.pinkAccent,))
+        ],
         //TODO Sort/Filter, Link to Hub
       ),
       body: Center(
@@ -37,8 +54,8 @@ class _HomeState extends State<Home> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          print("added entry lmoa");
-          //TODO Link create editor
+            Navigator
+                .pushNamed(context, "/editor", arguments: {"uid" : widget.user.id});
         },
         child: const Icon(Icons.add),
       ),

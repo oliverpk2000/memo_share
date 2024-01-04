@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:memo_share/components/CreatedTile.dart';
+import 'package:memo_share/components/FavoriteTile.dart';
+import 'package:memo_share/components/LikedTile.dart';
 import 'package:memo_share/domain/entry.dart';
 import 'package:memo_share/services/EntryService.dart';
 import 'package:memo_share/services/UserService.dart';
@@ -64,6 +66,14 @@ class _EntryListState extends State<EntryList> {
                               deleteFunction: deleteCreated,
                             );
                             //TODO liked, public, favorite
+                          } else if (widget.mode == Modes.favorite) {
+                            return FavoriteTile(
+                                entry: entry, deleteFunction: deleteFavorite
+                            );
+                          } else if (widget.mode == Modes.liked) {
+                            return LikedTile(
+                                entry: entry, deleteFunction: deleteLiked, uid: widget.uid,
+                            );
                           }
 
                           return Placeholder();
@@ -78,9 +88,25 @@ class _EntryListState extends State<EntryList> {
     loading = true;
     EntryService().deleteEntry(entryId).whenComplete(() {
       getEntryList(widget.idList);
-      //UserService()
-      //.deleteCreated(entryId, widget.uid)
-      //.whenComplete(() => getEntryList(widget.idList));
+      UserService()
+          .deleteCreated(entryId, widget.uid)
+          .whenComplete(() => getEntryList(widget.idList));
     });
   }
+
+  deleteFavorite(entryId) {
+    loading = true;
+    UserService()
+        .deleteFavorite(entryId, widget.uid)
+        .whenComplete(() => getEntryList(widget.idList));
+  }
+
+
+  deleteLiked(entryId) {
+    loading = true;
+    UserService()
+        .deleteLiked(entryId, widget.uid)
+        .whenComplete(() => getEntryList(widget.idList));
+  }
+
 }

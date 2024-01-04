@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:memo_share/components/entryEditor.dart';
 import 'package:memo_share/pages/EntryPage.dart';
+import 'package:memo_share/pages/favorites.dart';
+import 'package:memo_share/pages/liked.dart';
 import 'package:memo_share/pages/register.dart';
 import 'package:memo_share/pages/test.dart';
 
-import 'domain/user.dart';
 import 'pages/home.dart';
 import 'pages/login.dart';
 
@@ -27,12 +28,14 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: "/home",
       routes: {
-        "/home": (context) =>  Home(title:"MemoShare", user: User.defaultUser()),
-        "/login": (context) => Login(),
-        "/register": (context) => Register(),
-        "/entry": (context) => EntryPage(title: "Entry"),
-        "/test": (context) => Test(),
-        "/editor": (context) => EntryEditor(),
+        "/home": (context) =>  Home(title:"MemoShare"),
+        "/login": (context) => const Login(),
+        "/register": (context) => const Register(),
+        "/entry": (context) => const EntryPage(title: "Entry"),
+        "/test": (context) => const Test(),
+        "/editor": (context) => const EntryEditor(),
+        "/favorites": (context) => const Favorites(title: "Favoriten"),
+        "/liked" : (context) => const Liked(title: "Liked")
       },
     );
   }
