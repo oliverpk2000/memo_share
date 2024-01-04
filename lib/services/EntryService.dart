@@ -18,7 +18,7 @@ class EntryService {
       if (response.statusCode == 200) {
         print("New Entry successfully created!");
       } else {
-        throw "Something went wrong: Statuscode: ${response.statusCode}, Message: ${response.body}";
+        throw "Something went wrong while creating Entry: $entry";
       }
     } catch (error) {
       throw "Error while creating: $error";
@@ -53,12 +53,18 @@ class EntryService {
 
   Future<Entry> getEntry(int id) async {
     var url = Uri.parse("$pathToDB/entries/$id.json");
-    var response = await http.get(url);
 
-    if (response.statusCode == 200) {
-      return Entry.fromJSON(json.decode(response.body));
-    } else {
+    try {
+      var response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        return Entry.fromJSON(json.decode(response.body));
+      }
+
       throw "Something went wrong while searching for ID: $id";
+
+    } catch (error) {
+      throw "ID $id not found";
     }
   }
 
@@ -91,4 +97,16 @@ class EntryService {
     entry.id = id;
     addEntry(entry);
   }
+
+  Future<List<Entry>> getEntriesToId(List<int> idList) async {
+    var allEntries = await getAll();
+    return allEntries.where((element) => idList.contains(element.id)).toList();
+  }
+
+  Future<List<Entry>> getPublic() async {
+    var allEntries = await getAll();
+    return allEntries.where((element) => !element.private).toList();
+  }
+
+  //TODO sort/filter
 }
