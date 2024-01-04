@@ -29,7 +29,7 @@ class _CreatedTileState extends State<CreatedTile> {
             IconButton(
                 onPressed: () {
                   widget.deleteFunction(
-                      widget.entry.id, widget.entry.creatorId);
+                      widget.entry.id);
                 },
                 tooltip: "Entfernen",
                 icon: const Icon(Icons.delete)),
@@ -55,7 +55,7 @@ class _CreatedTileState extends State<CreatedTile> {
                     }
                   });
                 },
-                tooltip: "Favorit hinzufügen",
+                tooltip: favIcon == Icons.star_border ? "Favorit hinzufügen" : "Favorit entfernen",
                 icon: Icon(favIcon)),
           ],
         ),

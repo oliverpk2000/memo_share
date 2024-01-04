@@ -36,7 +36,14 @@ class _HomeState extends State<Home> {
                 Navigator.pushNamed(context, "/liked", arguments: {"idList": widget.user.favorited, "uid" : widget.user.id});
               },
               tooltip: "Geliked",
-              icon: const Icon(Icons.favorite, color: Colors.pinkAccent,))
+              icon: const Icon(Icons.favorite, color: Colors.pinkAccent,)),
+
+          IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, "/profile", arguments: widget.user.id);
+              },
+              tooltip: "Profil",
+              icon: const Icon(Icons.person, color: Colors.white,))
         ],
         //TODO Sort/Filter, Link to Hub
       ),
