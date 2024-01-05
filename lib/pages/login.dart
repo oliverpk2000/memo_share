@@ -16,7 +16,7 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Login to MemoShare"),
+        title: const Text("MemoShare Login"),
       ),
       body: Column(
         children: [
