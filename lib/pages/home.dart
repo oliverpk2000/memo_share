@@ -6,6 +6,15 @@ import 'package:memo_share/domain/user.dart';
 
 import '../domain/Modes.dart';
 
+const List<String> tags = [
+  "Sport und Fitness",
+  "Schule",
+  "Natur",
+  "Reisen",
+  "Freizeit",
+  "Beruf"
+];
+
 class Home extends StatefulWidget {
   Home({super.key, required String title});
 
