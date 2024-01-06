@@ -30,9 +30,10 @@ class Entry {
       required this.private,
       required this.imageUrls,
       required this.created,
-      required this.creatorId}) {
+      required this.creatorId,
+      required IdService idService}) {
 
-    id = IdService().newEntryId();
+    id = idService.newEntryId();
   }
 
   factory Entry.fromJSON(Map<String, dynamic> jsonMap) {

@@ -5,10 +5,11 @@ import '../domain/entry.dart';
 
 class CreatedTile extends StatefulWidget {
   const CreatedTile(
-      {super.key, required this.entry, required this.deleteFunction});
+      {super.key, required this.entry, required this.deleteFunction, required this.alreadyInFavorite});
 
   final Entry entry;
   final Function deleteFunction;
+  final bool alreadyInFavorite;
 
   @override
   State<CreatedTile> createState() => _CreatedTileState();
@@ -17,6 +18,14 @@ class CreatedTile extends StatefulWidget {
 class _CreatedTileState extends State<CreatedTile> {
   IconData favIcon = Icons.star_border;
 
+  @override
+  void initState() {
+    if (widget.alreadyInFavorite) {
+      favIcon = Icons.star;
+    }
+
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -27,12 +36,12 @@ class _CreatedTileState extends State<CreatedTile> {
         child: Row(
           children: [
             IconButton(
-                onPressed: () {
-                  widget.deleteFunction(
-                      widget.entry.id);
+                onPressed: () async {
+                  await widget.deleteFunction(widget.entry.id);
                 },
                 tooltip: "Entfernen",
                 icon: const Icon(Icons.delete)),
+
             IconButton(
               onPressed: () {
                 print('unfinished lmoa');
@@ -41,6 +50,7 @@ class _CreatedTileState extends State<CreatedTile> {
               tooltip: "Editieren",
               icon: const Icon(Icons.edit),
             ),
+
             IconButton(
                 onPressed: () {
                   setState(() {

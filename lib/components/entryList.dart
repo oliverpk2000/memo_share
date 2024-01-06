@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:memo_share/components/CreatedTile.dart';
 import 'package:memo_share/components/FavoriteTile.dart';
 import 'package:memo_share/components/LikedTile.dart';
 import 'package:memo_share/domain/entry.dart';
@@ -35,7 +34,9 @@ class _EntryListState extends State<EntryList> {
 
   @override
   void didChangeDependencies() {
-    getEntryList(widget.idList);
+    if (widget.idList.isNotEmpty) {
+      getEntryList(widget.idList);
+    }
     super.didChangeDependencies();
   }
 
@@ -60,13 +61,8 @@ class _EntryListState extends State<EntryList> {
                             border: Border.all(color: Colors.blueAccent),
                             color: Colors.lightBlueAccent[100]),
                         child: Builder(builder: (context) {
-                          if (widget.mode == Modes.created) {
-                            return CreatedTile(
-                              entry: entry,
-                              deleteFunction: deleteCreated,
-                            );
-                            //TODO liked, public, favorite
-                          } else if (widget.mode == Modes.favorite) {
+                            //TODO public
+                           if (widget.mode == Modes.favorite) {
                             return FavoriteTile(
                                 entry: entry, deleteFunction: deleteFavorite
                             );

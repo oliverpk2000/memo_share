@@ -1,15 +1,16 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class IdService {
-  late int entryId;
-  late int userId;
+  int entryId = 0;
+  int userId = 0;
 
-  IdService() {
-    SharedPreferences
+  Future<void> init() async {
+    await SharedPreferences
         .getInstance()
         .then((value) {
-          entryId = value.getInt("entryId") ?? 0;
-          userId = value.getInt("userId") ?? 0;
+      entryId = value.getInt("entryId") ?? 0;
+      userId = value.getInt("userId") ?? 0;
+      print("Hello");
     });
   }
 
@@ -25,6 +26,7 @@ class IdService {
   }
 
   newUserId() {
+    print("Hello 2");
     userId++;
     SharedPreferences
         .getInstance()
@@ -33,5 +35,14 @@ class IdService {
     });
 
     return userId;
+  }
+
+  removeUserId() {
+    userId--;
+    SharedPreferences
+        .getInstance()
+        .then((value) {
+      value.setInt("userId", userId);
+    });
   }
 }

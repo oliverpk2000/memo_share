@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 
 class UserForm extends StatefulWidget {
@@ -15,33 +18,44 @@ class _UserFormState extends State<UserForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          const Text('username:'),
-          TextField(
-            autofocus: true,
-            onChanged: (value) {
-              setState(() {
-                username = value;
-              });
-            },
-          ),
-          const Text('password:'),
-          TextField(
-            autofocus: true,
-            onChanged: (value) {
-              setState(() {
-                password = value;
-              });
-            },
-          ),
-          TextButton(
-              onPressed: (username.isEmpty || password.isEmpty)
-                  ? null
-                  : () => {widget.loginUser(username, password)},
-              child: const Text("submit"))
-        ],
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(100.0, 10.0, 100.0, 0),
+      child: Center(
+        child: Column(
+          children: <Widget> [
+            const Text('Username:'),
+            TextField(
+              autofocus: true,
+              onChanged: (value) {
+                setState(() {
+                  username = value;
+                });
+              },
+            ),
+            const Padding(padding: EdgeInsets.all(10.0)),
+            const Text('Passwort:'),
+            TextField(
+              autofocus: true,
+              onChanged: (value) {
+                setState(() {
+                  password = value;
+                });
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: TextButton(
+                style: ButtonStyle(),
+                  onPressed: (username.isEmpty || password.isEmpty)
+                      ? null
+                      : ()  {
+                    password = sha224.convert(utf8.encode(password)).toString();
+                    widget.loginUser(username, password);
+                  },
+                  child: const Text("Einloggen")),
+            )
+          ],
+        ),
       ),
     );
   }

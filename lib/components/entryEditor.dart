@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:memo_share/domain/entry.dart';
 import 'package:memo_share/pages/home.dart';
 import 'package:memo_share/services/EntryService.dart';
+import 'package:memo_share/services/IdService.dart';
 import 'package:memo_share/services/UserService.dart';
 
 class EntryEditor extends StatefulWidget {
@@ -20,7 +21,10 @@ class _EntryEditorState extends State<EntryEditor> {
   bool private = false;
   List<String> imageUrls = [];
   late Map<String, dynamic> pageData =
-      ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+  ModalRoute
+      .of(context)!
+      .settings
+      .arguments as Map<String, dynamic>;
   late Entry? entry = pageData["entry"] as Entry?;
   late int uid = pageData["uid"];
   EntryService entryService = EntryService();
@@ -74,78 +78,66 @@ class _EntryEditorState extends State<EntryEditor> {
               avaiableTags.isEmpty
                   ? const Text("Keine Tags mehr verfügbar")
                   : Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        DropdownButton(
-                            value: dropDownValue,
-                            items: avaiableTags
-                                .map((e) => DropdownMenuItem(
-                                      value: e,
-                                      child: Text(e),
-                                    ))
-                                .toList(),
-                            onChanged: (value) {
-                              setState(() {
-                                dropDownValue = value!;
-                              });
-                            }),
-                        const Padding(padding: EdgeInsets.only(left: 30)),
-                        FloatingActionButton(
-                            child: const Text("Add Tag"),
-                            onPressed: () {
-                              setState(() {
-                                avaiableTags.remove(dropDownValue);
-                                chosenTags.add(dropDownValue);
-
-                                if (avaiableTags.isEmpty) {
-                                  dropDownValue = "";
-                                } else {
-                                  dropDownValue = avaiableTags.first;
-                                }
-                              });
-                            })
-                      ],
-                    ),
-              SizedBox(
-                width: 1000.0,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: chosenTags
-                      .map((e) => Expanded(
-                            child: Row(
-                              children: [
-                                Text(e),
-                                IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        chosenTags.remove(e);
-                                        avaiableTags.add(e);
-                                        dropDownValue = avaiableTags.first;
-                                      });
-                                    },
-                                    icon: const Icon(
-                                      Icons.delete,
-                                      color: Colors.red,
-                                    ))
-                              ],
-                            ),
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  DropdownButton(
+                      value: dropDownValue,
+                      items: avaiableTags
+                          .map((e) =>
+                          DropdownMenuItem(
+                            value: e,
+                            child: Text(e),
                           ))
-                      .toList(),
-                ),
+                          .toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          dropDownValue = value!;
+                        });
+                      }),
+                  const Padding(padding: EdgeInsets.only(left: 30)),
+                  FloatingActionButton(
+                      child: const Text("Add Tag"),
+                      onPressed: () {
+                        setState(() {
+                          avaiableTags.remove(dropDownValue);
+                          chosenTags.add(dropDownValue);
+
+                          if (avaiableTags.isEmpty) {
+                            dropDownValue = "";
+                          } else {
+                            dropDownValue = avaiableTags.first;
+                          }
+                        });
+                      })
+                ],
               ),
-              /*TextField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Enter the Tags with ,',
+              Flex(
+                mainAxisSize: MainAxisSize.min,
+                direction: Axis.vertical,
+                children: chosenTags
+                    .map((e) =>
+                    Flexible(
+                      fit: FlexFit.loose,
+                      child: Row(
+                        children: [
+                          Text(e),
+                          IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  chosenTags.remove(e);
+                                  avaiableTags.add(e);
+                                  dropDownValue = avaiableTags.first;
+                                });
+                              },
+                              icon: const Icon(
+                                Icons.delete,
+                                color: Colors.red,
+                              ))
+                        ],
+                      ),
+                    ))
+                    .toList(),
               ),
-              autofocus: true,
-              keyboardType: TextInputType.text,
-              onChanged: (value) {
-                setState(() {
-                  tags = value.split(",");
-                });
-              },
-            ),*/
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
               ),
@@ -182,12 +174,24 @@ class _EntryEditorState extends State<EntryEditor> {
                   onPressed: enableButton()
                       ? null
                       : () async {
-                          await entryService.addEntry(entry!);
-                          UserService()
-                              .addToCreated(entry!.id, uid)
-                              .whenComplete(() => Navigator.pop(context));
-                        },
-                  child: const Text("save"))
+                    var service = IdService();
+                    await service.init();
+
+                    entry = Entry.withNewID(title: title,
+                        content: content,
+                        tags: tags,
+                        private: private,
+                        imageUrls: imageUrls,
+                        created: DateTime.now(),
+                        creatorId: uid,
+                        idService: service);
+
+                    await entryService.addEntry(entry!);
+                    UserService()
+                        .addToCreated(entry!.id, uid)
+                        .whenComplete(() => Navigator.pop(context));
+                  },
+                  child: const Text("Speichern"))
             ],
           ),
         ),
@@ -197,7 +201,8 @@ class _EntryEditorState extends State<EntryEditor> {
 
   bool enableButton() {
     setState(() {
-      entry = Entry.withNewID(
+      entry = Entry(
+          id: 0,
           title: title,
           content: content,
           tags: chosenTags,
@@ -207,7 +212,7 @@ class _EntryEditorState extends State<EntryEditor> {
           creatorId: uid);
     });
 
-    if (entry!.title.isEmpty && entry!.content.isEmpty) {
+    if (entry!.title.isEmpty || entry!.content.isEmpty) {
       return true;
     } else {
       return false;

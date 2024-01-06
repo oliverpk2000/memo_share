@@ -37,12 +37,19 @@ class EntryService {
     var response = await http.get(url);
 
     if (response.statusCode == 200) {
-      final List<dynamic> data = json.decode(response.body);
+      try {
+        final List<dynamic> data = json.decode(response.body) ?? [];
 
-      for (var element in data) {
-        if (element != null) {
-          entries.add(Entry.fromJSON(Map.castFrom(element)));
+        for (var element in data) {
+          if (element != null) {
+            entries.add(Entry.fromJSON(Map.castFrom(element)));
+          }
         }
+      } catch (err) {
+        final Map<String, dynamic> data = json.decode(response.body);
+        data.forEach((key, value) {
+          entries.add(Entry.fromJSON(value));
+        });
       }
 
       return entries;
@@ -62,7 +69,6 @@ class EntryService {
       }
 
       throw "Something went wrong while searching for ID: $id";
-
     } catch (error) {
       throw "ID $id not found";
     }
@@ -71,7 +77,6 @@ class EntryService {
   Future<void> deleteEntry(int id) async {
     try {
       await getEntry(id);
-
     } catch (error) {
       throw "ID does not exist $id";
     }
@@ -89,7 +94,6 @@ class EntryService {
   Future<void> updateEntry(Entry entry, int id) async {
     try {
       await getEntry(id);
-
     } catch (error) {
       throw "ID does not exist $id";
     }
@@ -108,5 +112,5 @@ class EntryService {
     return allEntries.where((element) => !element.private).toList();
   }
 
-  //TODO sort/filter
+//TODO sort/filter
 }

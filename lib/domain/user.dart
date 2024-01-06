@@ -12,9 +12,9 @@ class User {
     id = 0;
     username = "defaultUser";
     password = "defaultPassword";
-    liked = [1, 2, 3];
-    favorited = [4, 5, 6];
-    created = [7, 8, 9];
+    liked = [];
+    favorited = [];
+    created = [];
   }
 
   User(
@@ -30,9 +30,10 @@ class User {
       required this.password,
       required this.liked,
       required this.favorited,
-      required this.created}) {
+      required this.created,
+      required IdService idService}) {
 
-    id = IdService().newUserId();
+    id = idService.newUserId();
   }
 
   factory User.fromJSON(Map<String, dynamic> jsonMap) {
