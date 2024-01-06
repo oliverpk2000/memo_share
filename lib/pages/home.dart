@@ -19,7 +19,7 @@ const List<String> tags = [
 ];
 
 class Home extends StatefulWidget {
-  Home({super.key, required String title});
+  const Home({super.key, required String title});
 
   @override
   State<Home> createState() => _HomeState();
@@ -59,9 +59,33 @@ class _HomeState extends State<Home> {
           leading: Image.asset("images/logo_transparent.png"),
           actions: [
             IconButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, "/favorites",
+                onPressed: () async {
+                  getUser(uid).whenComplete(() {
+                    setState(() {
+                      loading = false;
+                    });
+
+                    Navigator.pushNamed(context, "/hub",
+                        arguments: user.id);
+                  });
+
+                },
+                tooltip: "Andere Beiträge",
+                icon: const Icon(
+                  Icons.people,
+                  color: Colors.green,
+                )),
+            
+            IconButton(
+                onPressed: () async {
+                  await Navigator.pushNamed(context, "/favorites",
                       arguments: {"idList": user.favorited, "uid": user.id});
+
+                  getUser(uid).whenComplete(() {
+                    setState(() {
+                      loading = false;
+                    });
+                  });
                 },
                 tooltip: "Favoriten",
                 icon: const Icon(
@@ -69,9 +93,15 @@ class _HomeState extends State<Home> {
                   color: Colors.orange,
                 )),
             IconButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, "/liked",
-                      arguments: {"idList": user.favorited, "uid": user.id});
+                onPressed: () async {
+                  await Navigator.pushNamed(context, "/liked",
+                      arguments: {"idList": user.liked, "uid": user.id});
+
+                  getUser(uid).whenComplete(() {
+                    setState(() {
+                      loading = false;
+                    });
+                  });
                 },
                 tooltip: "Geliked",
                 icon: const Icon(
@@ -86,7 +116,8 @@ class _HomeState extends State<Home> {
                 icon: const Icon(
                   Icons.person,
                   color: Colors.white,
-                ))
+                )),
+
           ],
           //TODO Link to Hub
         ),
@@ -116,6 +147,8 @@ class _HomeState extends State<Home> {
                                   entry: entry,
                                   deleteFunction: deleteCreated,
                                   alreadyInFavorite: inFavorite,
+                                  favorite: favoriteCreated,
+                                  unfavorite: unfavoriteCreated,
                                 ),
                               ));
                         }))
@@ -142,6 +175,26 @@ class _HomeState extends State<Home> {
     loading = true;
     await EntryService().deleteEntry(entryId);
     await UserService().deleteCreated(entryId, uid);
+    getUser(uid).whenComplete(() {
+      setState(() {
+        loading = false;
+      });
+    });
+  }
+
+  unfavoriteCreated(entryId) async {
+    loading = true;
+    await UserService().deleteFavorite(entryId, uid);
+    getUser(uid).whenComplete(() {
+      setState(() {
+        loading = false;
+      });
+    });
+  }
+
+  favoriteCreated(entryId) async {
+    loading = true;
+    await UserService().addToFavorite(entryId, uid);
     getUser(uid).whenComplete(() {
       setState(() {
         loading = false;

@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:memo_share/components/entryList.dart';
-
-import '../domain/Modes.dart';
 
 class Liked extends StatefulWidget {
   const Liked({super.key, required String title});
@@ -23,7 +20,7 @@ class _FavoritesState extends State<Liked> {
         backgroundColor: Colors.pinkAccent,
         title: const Text("Geliked"),
       ),
-      body: EntryList(idList: idList, mode: Modes.liked, uid: uid),
+      body: const Placeholder(),
     );
   }
 }

@@ -19,20 +19,21 @@ class _FavoriteTileState extends State<FavoriteTile> {
     return ListTile(
       title: Text(widget.entry.title),
       subtitle: Text(widget.entry.created.toString()),
-      trailing: SizedBox(
+      //TODO vielleicht da auch deleten
+      /*'trailing: SizedBox(
         width: 120.0,
         child: Row(
           children: [
 
             IconButton(
-                onPressed: () {
-                  //TODO delete from favorites
+                onPressed: () async {
+                  await widget.deleteFunction(widget.entry.id);
                 },
                 tooltip: "Favorit entfernen",
                 icon: const Icon(Icons.star)),
           ],
         ),
-      ),
+      ),*/
     );
   }
 }
