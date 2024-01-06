@@ -60,13 +60,13 @@ class _HomeState extends State<Home> {
           actions: [
             IconButton(
                 onPressed: () async {
+                  await Navigator.pushNamed(context, "/hub",
+                        arguments: user.id);
+
                   getUser(uid).whenComplete(() {
                     setState(() {
                       loading = false;
                     });
-
-                    Navigator.pushNamed(context, "/hub",
-                        arguments: user.id);
                   });
 
                 },
@@ -75,7 +75,7 @@ class _HomeState extends State<Home> {
                   Icons.people,
                   color: Colors.green,
                 )),
-            
+
             IconButton(
                 onPressed: () async {
                   await Navigator.pushNamed(context, "/favorites",

@@ -41,7 +41,6 @@ class _FavoritesState extends State<Favorites> {
 
   @override
   Widget build(BuildContext context) {
-    print("building favorites");
     return ModalProgressHUD(
       inAsyncCall: loading,
       child: Scaffold(
@@ -72,26 +71,11 @@ class _FavoritesState extends State<Favorites> {
                                 color: Colors.lightBlueAccent[100]),
                             child: FavoriteTile(
                               entry: entry,
-                              deleteFunction: deleteFavorite,
                             ),
                           ));
                     }))
           ]),
       ),
     );
-  }
-
-  deleteFavorite(int entryId) async {
-    await UserService().deleteFavorite(entryId, uid);
-    idList.remove(entryId);
-    EntryService()
-        .getEntriesToId(idList)
-        .then((value) {
-      entries = value;
-
-      setState(() {
-        loading = false;
-      });
-    });
   }
 }

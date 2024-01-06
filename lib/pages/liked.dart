@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:memo_share/components/LikedTile.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+
+import '../domain/entry.dart';
+import '../services/EntryService.dart';
 
 class Liked extends StatefulWidget {
   const Liked({super.key, required String title});
@@ -12,15 +17,65 @@ class _FavoritesState extends State<Liked> {
       ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
   late List<int> idList = pageData["idList"];
   late int uid = pageData["uid"];
+  late List<Entry> entries = [];
+  bool loading = true;
+
+  @override
+  void didChangeDependencies() {
+    late Map<String, dynamic> pageData =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    idList = pageData["idList"];
+    uid = pageData["uid"];
+
+    EntryService().getEntriesToId(idList).then((value) {
+      entries = value;
+
+      setState(() {
+        loading = false;
+      });
+    });
+
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.pinkAccent,
-        title: const Text("Geliked"),
+    return ModalProgressHUD(
+      inAsyncCall: loading,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.pinkAccent,
+          title: const Text("Geliked"),
+        ),
+        body: entries.isEmpty
+            ? const Center(child: Text("Keine Einträge geliked"))
+            : Flex(direction: Axis.horizontal, children: [
+                Expanded(
+                    child: ListView.builder(
+                        itemCount: entries.length,
+                        itemBuilder: (context, index) {
+                          final entry = entries.elementAt(index);
+
+                          return GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(context, "/entry",
+                                    arguments: {"id": entry.id});
+                              },
+                              
+                              child: Container(
+                                margin: const EdgeInsets.fromLTRB(
+                                    100.0, 10.0, 100.0, 10.0),
+                                decoration: BoxDecoration(
+                                    border:
+                                        Border.all(color: Colors.blueAccent),
+                                    color: Colors.lightBlueAccent[100]),
+                                child: LikedTile(
+                                  entry: entry,
+                                ),
+                              ));
+                        }))
+              ]),
       ),
-      body: const Placeholder(),
     );
   }
 }
