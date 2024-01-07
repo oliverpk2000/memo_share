@@ -19,13 +19,15 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          leadingWidth: 200,
+          toolbarHeight: 75,
           title: const Text(
             "MemoShare Login",
             style: TextStyle(color: Colors.white),
           ),
           backgroundColor: Colors.purple,
           centerTitle: true,
-          leading: Image.asset("images/logo_transparent.png"),
+          leading: Image.asset("images/logotransparent_fullhd.png"),
         ),
         body: Column(
           children: <Widget>[

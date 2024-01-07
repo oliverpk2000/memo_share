@@ -15,6 +15,8 @@ class UserForm extends StatefulWidget {
 class _UserFormState extends State<UserForm> {
   String username = "";
   String password = "";
+  TextEditingController nameControler = TextEditingController();
+  TextEditingController passwordControler = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +27,7 @@ class _UserFormState extends State<UserForm> {
           children: <Widget> [
             const Text('Username:'),
             TextField(
+              controller: nameControler,
               autofocus: true,
               onChanged: (value) {
                 setState(() {
@@ -35,6 +38,7 @@ class _UserFormState extends State<UserForm> {
             const Padding(padding: EdgeInsets.all(10.0)),
             const Text('Passwort:'),
             TextField(
+              controller: passwordControler,
               autofocus: true,
               onChanged: (value) {
                 setState(() {
@@ -48,9 +52,16 @@ class _UserFormState extends State<UserForm> {
                 style: ButtonStyle(),
                   onPressed: (username.isEmpty || password.isEmpty)
                       ? null
-                      : ()  {
+                      : () async {
                     password = sha224.convert(utf8.encode(password)).toString();
                     widget.loginUser(username, password);
+
+                    setState(() {
+                      username = "";
+                      password = "";
+                      nameControler.text = "";
+                      passwordControler.text = "";
+                    });
                   },
                   child: const Text("Einloggen")),
             )

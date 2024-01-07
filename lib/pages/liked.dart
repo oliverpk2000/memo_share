@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:memo_share/components/LikedTile.dart';
+import 'package:memo_share/components/likedTile.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../domain/entry.dart';
@@ -19,6 +19,10 @@ class _FavoritesState extends State<Liked> {
   late int uid = pageData["uid"];
   late List<Entry> entries = [];
   bool loading = true;
+  bool asc = true;
+  String sortLabel = "Aufsteigend";
+  bool ascDate = true;
+  String dateLabel = "Neuste";
 
   @override
   void didChangeDependencies() {
@@ -46,6 +50,51 @@ class _FavoritesState extends State<Liked> {
         appBar: AppBar(
           backgroundColor: Colors.pinkAccent,
           title: const Text("Geliked"),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  setState(() {
+                    if (asc) {
+                      entries.sort((entry1, entry2) =>
+                          entry1.title.compareTo(entry2.title));
+                      asc = false;
+                      sortLabel = "Absteigend";
+                    } else {
+                      entries.sort((entry1, entry2) =>
+                          entry2.title.compareTo(entry1.title));
+                      asc = true;
+                      sortLabel = "Aufsteigend";
+                    }
+                  });
+                },
+                tooltip: sortLabel,
+                icon: const Icon(
+                  Icons.abc,
+                  size: 35,
+                )),
+
+            IconButton(
+                onPressed: () {
+                  setState(() {
+                    if (ascDate) {
+                      entries.sort((entry1, entry2) =>
+                          entry2.created.compareTo(entry1.created));
+                      ascDate = false;
+                      dateLabel = "Älteste";
+                    } else {
+                      entries.sort((entry1, entry2) =>
+                          entry1.created.compareTo(entry2.created));
+                      ascDate = true;
+                      dateLabel = "Neuste";
+                    }
+                  });
+                },
+                tooltip: dateLabel,
+                icon: const Icon(
+                  Icons.date_range,
+                  size: 35,
+                )),
+          ],
         ),
         body: entries.isEmpty
             ? const Center(child: Text("Keine Einträge geliked"))

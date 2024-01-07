@@ -1,7 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:memo_share/components/CreatedTile.dart';
+import 'package:memo_share/components/createdTile.dart';
 import 'package:memo_share/domain/user.dart';
 import 'package:memo_share/services/EntryService.dart';
 import 'package:memo_share/services/UserService.dart';
@@ -15,7 +15,9 @@ const List<String> tags = [
   "Natur",
   "Reisen",
   "Freizeit",
-  "Beruf"
+  "Beruf",
+  "Essen",
+  "Gesundheit"
 ];
 
 class Home extends StatefulWidget {
@@ -30,6 +32,10 @@ class _HomeState extends State<Home> {
   late User user = User.defaultUser();
   List<Entry> created = [];
   bool loading = true;
+  bool asc = true;
+  String sortLabel = "Aufsteigend";
+  bool ascDate = true;
+  String dateLabel = "Neuste";
 
   Future<void> getUser(uid) async {
     user = await UserService().getUser(uid);
@@ -53,29 +59,74 @@ class _HomeState extends State<Home> {
       inAsyncCall: loading,
       child: Scaffold(
         appBar: AppBar(
+          leadingWidth: 200,
+          toolbarHeight: 75,
           title: const Text("MemoShare-Home"),
           backgroundColor: Colors.lightBlue,
           centerTitle: true,
-          leading: Image.asset("images/logo_transparent.png"),
+          leading: Image.asset("images/logotransparent_fullhd.png"),
           actions: [
+            IconButton(
+                onPressed: () {
+                  setState(() {
+                    if (asc) {
+                      created.sort((entry1, entry2) =>
+                          entry1.title.compareTo(entry2.title));
+                      asc = false;
+                      sortLabel = "Absteigend";
+                    } else {
+                      created.sort((entry1, entry2) =>
+                          entry2.title.compareTo(entry1.title));
+                      asc = true;
+                      sortLabel = "Aufsteigend";
+                    }
+                  });
+                },
+                tooltip: sortLabel,
+                icon: const Icon(
+                  Icons.abc,
+                  size: 35,
+                )),
+
+            IconButton(
+                onPressed: () {
+                  setState(() {
+                    if (ascDate) {
+                      created.sort((entry1, entry2) =>
+                          entry2.created.compareTo(entry1.created));
+                      ascDate = false;
+                      dateLabel = "Älteste";
+                    } else {
+                      created.sort((entry1, entry2) =>
+                          entry1.created.compareTo(entry2.created));
+                      ascDate = true;
+                      dateLabel = "Neuste";
+                    }
+                  });
+                },
+                tooltip: dateLabel,
+                icon: const Icon(
+                  Icons.date_range,
+                  size: 35,
+                )),
+
             IconButton(
                 onPressed: () async {
                   await Navigator.pushNamed(context, "/hub",
-                        arguments: user.id);
+                      arguments: user.id);
 
                   getUser(uid).whenComplete(() {
                     setState(() {
                       loading = false;
                     });
                   });
-
                 },
                 tooltip: "Andere Beiträge",
-                icon: const Icon(
+                icon: Icon(
                   Icons.people,
-                  color: Colors.green,
+                  color: Colors.lightBlue[50],
+                  size: 35,
                 )),
-
             IconButton(
                 onPressed: () async {
                   await Navigator.pushNamed(context, "/favorites",
@@ -91,6 +142,7 @@ class _HomeState extends State<Home> {
                 icon: const Icon(
                   Icons.star,
                   color: Colors.orange,
+                  size: 35,
                 )),
             IconButton(
                 onPressed: () async {
@@ -107,6 +159,7 @@ class _HomeState extends State<Home> {
                 icon: const Icon(
                   Icons.favorite,
                   color: Colors.pinkAccent,
+                  size: 35,
                 )),
             IconButton(
                 onPressed: () {
@@ -116,8 +169,8 @@ class _HomeState extends State<Home> {
                 icon: const Icon(
                   Icons.person,
                   color: Colors.white,
+                  size: 35,
                 )),
-
           ],
           //TODO Link to Hub
         ),
@@ -146,7 +199,9 @@ class _HomeState extends State<Home> {
                                 child: CreatedTile(
                                   entry: entry,
                                   deleteFunction: deleteCreated,
-                                  alreadyInFavorite: inFavorite,
+                                  icon: inFavorite
+                                      ? Icons.star
+                                      : Icons.star_border,
                                   favorite: favoriteCreated,
                                   unfavorite: unfavoriteCreated,
                                 ),
@@ -154,6 +209,7 @@ class _HomeState extends State<Home> {
                         }))
               ]),
         floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.green,
           onPressed: () async {
             loading = true;
             await Navigator.pushNamed(context, "/editor",
@@ -165,7 +221,10 @@ class _HomeState extends State<Home> {
               });
             });
           },
-          child: const Icon(Icons.add),
+          child: const Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
         ),
       ),
     );

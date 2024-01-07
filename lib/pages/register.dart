@@ -21,16 +21,18 @@ class _RegisterState extends State<Register> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          leadingWidth: 200,
+          toolbarHeight: 75,
           title: const Text(
             "Als MemoShare User registrieren",
             style: TextStyle(color: Colors.white),
           ),
           backgroundColor: Colors.purple,
           centerTitle: true,
-          leading: Image.asset("images/logo_transparent.png"),
+          leading: Image.asset("images/logotransparent_fullhd.png"),
         ),
         body: Column(
-          children: <Widget> [
+          children: <Widget>[
             UserForm(
               loginUser: (username, password) async {
                 var service = IdService();
@@ -52,7 +54,6 @@ class _RegisterState extends State<Register> {
                   setState(() {
                     errors = "";
                   });
-
                 } catch (error) {
                   setState(() {
                     errors = "Username existiert bereits";
@@ -70,7 +71,7 @@ class _RegisterState extends State<Register> {
                 onPressed: () {
                   Navigator.of(context).pushNamed("/login");
                 },
-                child: const Text('Login'))
+                child: const Text('Login')),
           ],
         ));
   }
