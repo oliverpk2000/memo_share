@@ -55,7 +55,8 @@ class _EntryPageState extends State<EntryPage> {
                     var visibility = entry.private ? "privat" : "öffentlich";
                     var snackBar = SnackBar(
                         duration: const Duration(seconds: 2),
-                        content: Text("Dieser Eintrag ist $visibility und wurde am ${entry.created.day}.${entry.created.month}.${entry.created.year}"));
+                        content: Text(
+                            "Dieser Eintrag ist $visibility und wurde am ${entry.created.day}.${entry.created.month}.${entry.created.year}"));
 
                     setState(() {
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -64,17 +65,6 @@ class _EntryPageState extends State<EntryPage> {
                   tooltip: "Details",
                   icon: const Icon(
                     Icons.info,
-                    color: Colors.white,
-                  )),
-              IconButton(
-                  //Updating
-                  onPressed: () {
-                    //TODO link to editor
-                    //var newEntry = await Navigator.pushnamed("/changeForm, Entry.toJson ...");
-                  },
-                  tooltip: "Bearbeiten",
-                  icon: const Icon(
-                    Icons.edit,
                     color: Colors.white,
                   )),
             ],
@@ -130,7 +120,7 @@ class _EntryPageState extends State<EntryPage> {
                 entry.imageUrls.isEmpty
                     ? const Text("Keine Bilder zu diesem Beitrag hinzugefügt")
                     : Expanded(
-                      child: SizedBox(
+                        child: SizedBox(
                           width: entry.imageUrls.length * 300,
                           height: entry.imageUrls.length * 300,
                           child: ListView.builder(
@@ -140,7 +130,7 @@ class _EntryPageState extends State<EntryPage> {
                             },
                           ),
                         ),
-                    ),
+                      ),
               ],
             ),
           ),

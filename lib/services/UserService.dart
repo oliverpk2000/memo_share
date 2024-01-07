@@ -12,13 +12,21 @@ class UserService {
     var response = await http.get(url);
 
     if (response.statusCode == 200) {
-      final List<dynamic> data = json.decode(response.body) ?? [];
+      try {
+        final List<dynamic> data = json.decode(response.body) ?? [];
 
-      for (var element in data) {
-        if (element != null) {
-          users.add(User.fromJSON(Map.castFrom(element)));
+        for (var element in data) {
+          if (element != null) {
+            users.add(User.fromJSON(Map.castFrom(element)));
+          }
         }
+      } catch (err) {
+        final Map<String, dynamic> data = json.decode(response.body);
+        data.forEach((key, value) {
+          users.add(User.fromJSON(value));
+        });
       }
+
 
       return users;
     } else {
@@ -28,7 +36,6 @@ class UserService {
 
   Future<User> getUser(int id) async {
     var url = Uri.parse("$pathToDB/users/$id.json");
-
 
     try {
       var response = await http.get(url);

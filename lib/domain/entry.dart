@@ -1,3 +1,5 @@
+import 'package:memo_share/services/IdService.dart';
+
 class Entry {
   late int id;
   late String title;
@@ -8,9 +10,8 @@ class Entry {
   late DateTime created;
   late int creatorId;
 
-  static int idCount = 1; //TODO shared preferences abspeichern
   static Entry defaultEntry = Entry(
-      id: 0, title: "", content: "", tags: [], private: false, imageUrls: [], created: DateTime.now(), creatorId: -1);
+      id: 0, title: "", content: "", tags: [], private: false, imageUrls: [], created: DateTime.now(), creatorId: 0);
 
   Entry(
       {required this.id,
@@ -29,10 +30,10 @@ class Entry {
       required this.private,
       required this.imageUrls,
       required this.created,
-      required this.creatorId}) {
+      required this.creatorId,
+      required IdService idService}) {
 
-    id = idCount;
-    idCount++;
+    id = idService.newEntryId();
   }
 
   factory Entry.fromJSON(Map<String, dynamic> jsonMap) {

@@ -1,20 +1,20 @@
+import 'package:memo_share/services/IdService.dart';
+
 class User {
   late int id;
   late String username;
-  late String password; //Lists with IDs
+  late String password;
   late List<int> liked;
   late List<int> favorited;
   late List<int> created;
-
-  static int idCount = 1;
 
   User.defaultUser() {
     id = 0;
     username = "defaultUser";
     password = "defaultPassword";
-    liked = [1, 2, 3];
-    favorited = [4, 5, 6];
-    created = [7, 8, 9];
+    liked = [];
+    favorited = [];
+    created = [];
   }
 
   User(
@@ -30,9 +30,10 @@ class User {
       required this.password,
       required this.liked,
       required this.favorited,
-      required this.created}) {
-    id = idCount;
-    idCount++;
+      required this.created,
+      required IdService idService}) {
+
+    id = idService.newUserId();
   }
 
   factory User.fromJSON(Map<String, dynamic> jsonMap) {
