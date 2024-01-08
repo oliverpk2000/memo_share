@@ -1,48 +1,48 @@
-import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class IdService {
   int entryId = 0;
   int userId = 0;
+  final String pathToDB =
+      "https://memoshare-bde3c-default-rtdb.europe-west1.firebasedatabase.app/";
 
   Future<void> init() async {
-    await SharedPreferences
-        .getInstance()
-        .then((value) {
-      entryId = value.getInt("entryId") ?? 0;
-      userId = value.getInt("userId") ?? 0;
-      print("Hello");
-    });
+    var userResponse = await http.get(Uri.parse("$pathToDB/ids/latestUserId.json"));
+    var entryResponse = await http.get(Uri.parse("$pathToDB/ids/latestEntryId.json"));
+    userId = int.parse(userResponse.body);
+    entryId = int.parse(entryResponse.body);
   }
 
   int newEntryId() {
-   entryId++;
-   SharedPreferences
-       .getInstance()
-       .then((value) {
-        value.setInt("entryId", entryId);
-   });
+    entryId++;
+
+   http.patch(
+       Uri.parse("$pathToDB/ids.json"),
+       body: json.encode({"latestEntryId" : entryId})
+   );
 
    return entryId;
   }
 
   newUserId() {
-    print("Hello 2");
     userId++;
-    SharedPreferences
-        .getInstance()
-        .then((value) {
-      value.setInt("userId", userId);
-    });
+    print(json.encode({"latestUserId" : userId}));
+
+    print(userId);
+    http.patch(
+        Uri.parse("$pathToDB/ids.json"),
+        body: json.encode({"latestUserId" : userId})
+    );
 
     return userId;
   }
 
   removeUserId() {
     userId--;
-    SharedPreferences
-        .getInstance()
-        .then((value) {
-      value.setInt("userId", userId);
-    });
+    http.patch(
+        Uri.parse("$pathToDB/ids.json"),
+        body: json.encode({"latestUserId" : userId})
+    );
   }
 }
