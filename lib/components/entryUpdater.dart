@@ -185,7 +185,7 @@ class _EntryUpdaterState extends State<EntryUpdater> {
                         creatorId: uid,
                         idService: service);
 
-                    await entryService.addEntry(entry!);
+                    await entryService.updateEntry(entry!, entry!.id);
                     UserService()
                         .addToCreated(entry!.id, uid)
                         .whenComplete(() => Navigator.pop(context));
