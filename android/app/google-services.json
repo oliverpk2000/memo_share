@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "93963667031",
+    "firebase_url": "https://memoshare-bde3c-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "memoshare-bde3c",
+    "storage_bucket": "memoshare-bde3c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:93963667031:android:850da4d1a4222fb5e80512",
+        "android_client_info": {
+          "package_name": "com.example.memo_share"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCO1tzOp4Zt0BKaOPI_VWkT2PVneCEXUjw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

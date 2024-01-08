@@ -40,11 +40,11 @@ class _EntryUpdaterState extends State<EntryUpdater> {
         child: Center(
           child: Column(
             children: [
-              const Text("Title"),
+              const Text("Titel"),
               TextFormField(
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  hintText: 'Enter your Title',
+                  hintText: 'Titel hier eingeben',
                 ),
                 initialValue: title,
                 autofocus: true,
@@ -58,11 +58,11 @@ class _EntryUpdaterState extends State<EntryUpdater> {
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
               ),
-              const Text("Content"),
+              const Text("Inhalt"),
               TextFormField(
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  hintText: 'Enter your Text',
+                  hintText: 'Inhalt des Beitrages eingeben',
                 ),
                 initialValue: content,
                 maxLines: null,
@@ -80,72 +80,72 @@ class _EntryUpdaterState extends State<EntryUpdater> {
               avaiableTags.isEmpty
                   ? const Text("Keine Tags mehr verfügbar")
                   : Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  DropdownButton(
-                      value: dropDownValue,
-                      items: avaiableTags
-                          .map((e) =>
-                          DropdownMenuItem(
-                            value: e,
-                            child: Text(e),
-                          ))
-                          .toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          dropDownValue = value!;
-                        });
-                      }),
-                  const Padding(padding: EdgeInsets.only(left: 30)),
-                  FloatingActionButton(
-                      child: const Text("Add Tag"),
-                      onPressed: () {
-                        setState( () {
-                          avaiableTags.remove(dropDownValue);
-                          chosenTags.add(dropDownValue);
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        DropdownButton(
+                            value: dropDownValue,
+                            items: avaiableTags
+                                .map((e) => DropdownMenuItem(
+                                      value: e,
+                                      child: Text(e),
+                                    ))
+                                .toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                dropDownValue = value!;
+                              });
+                            }),
+                        const Padding(padding: EdgeInsets.only(left: 30)),
+                        FloatingActionButton(
+                            backgroundColor: Colors.green,
+                            child: const Icon(
+                              Icons.add,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                avaiableTags.remove(dropDownValue);
+                                chosenTags.add(dropDownValue);
 
-
-
-                          if (avaiableTags.isEmpty) {
-                            dropDownValue = "";
-                          } else {
-                            dropDownValue = avaiableTags.first;
-                          }
-                        });
-                      })
-                ],
-              ),
+                                if (avaiableTags.isEmpty) {
+                                  dropDownValue = "";
+                                } else {
+                                  dropDownValue = avaiableTags.first;
+                                }
+                              });
+                            })
+                      ],
+                    ),
               Flex(
                 mainAxisSize: MainAxisSize.min,
                 direction: Axis.vertical,
                 children: chosenTags
-                    .map((e) =>
-                    Flexible(
-                      fit: FlexFit.loose,
-                      child: Row(
-                        children: [
-                          Text(e),
-                          IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  chosenTags.remove(e);
-                                  avaiableTags.add(e);
-                                  dropDownValue = avaiableTags.first;
-                                });
-                              },
-                              icon: const Icon(
-                                Icons.delete,
-                                color: Colors.red,
-                              ))
-                        ],
-                      ),
-                    ))
+                    .map((e) => Flexible(
+                          fit: FlexFit.loose,
+                          child: Row(
+                            children: [
+                              Text(e),
+                              IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      chosenTags.remove(e);
+                                      avaiableTags.add(e);
+                                      dropDownValue = avaiableTags.first;
+                                    });
+                                  },
+                                  icon: const Icon(
+                                    Icons.delete,
+                                    color: Colors.red,
+                                  ))
+                            ],
+                          ),
+                        ))
                     .toList(),
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
               ),
-              const Text("Private"),
+              const Text("Privat"),
               Checkbox(
                 value: private,
                 onChanged: (bool? value) {
@@ -157,7 +157,7 @@ class _EntryUpdaterState extends State<EntryUpdater> {
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
               ),
-              const Text("Images"),
+              const Text("Bilder"),
               TextFormField(
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -179,23 +179,24 @@ class _EntryUpdaterState extends State<EntryUpdater> {
                   onPressed: enableButton()
                       ? null
                       : () async {
-                    var service = IdService();
-                    await service.init();
+                          var service = IdService();
+                          await service.init();
 
-                    entry = Entry.withNewID(title: title,
-                        content: content,
-                        tags: tags,
-                        private: private,
-                        imageUrls: imageUrls,
-                        created: DateTime.now(),
-                        creatorId: uid,
-                        idService: service);
+                          entry = Entry.withNewID(
+                              title: title,
+                              content: content,
+                              tags: tags,
+                              private: private,
+                              imageUrls: imageUrls,
+                              created: DateTime.now(),
+                              creatorId: uid,
+                              idService: service);
 
-                    await entryService.updateEntry(entry!, entry!.id);
-                    UserService()
-                        .addToCreated(entry!.id, uid)
-                        .whenComplete(() => Navigator.pop(context));
-                  },
+                          await entryService.updateEntry(entry!, entry!.id);
+                          UserService()
+                              .addToCreated(entry!.id, uid)
+                              .whenComplete(() => Navigator.pop(context));
+                        },
                   child: const Text("Speichern"))
             ],
           ),
@@ -227,7 +228,7 @@ class _EntryUpdaterState extends State<EntryUpdater> {
   String urlsToString(List<String> urls) {
     String urlString = "";
     for (String url in urls) {
-        urlString += ", $url";
+      urlString += ", $url";
     }
     return urlString;
   }

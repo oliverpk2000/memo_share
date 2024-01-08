@@ -1,9 +1,13 @@
+import 'package:file_picker/_internal/file_picker_web.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:memo_share/domain/entry.dart';
 import 'package:memo_share/pages/home.dart';
 import 'package:memo_share/services/EntryService.dart';
 import 'package:memo_share/services/IdService.dart';
 import 'package:memo_share/services/UserService.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 class EntryEditor extends StatefulWidget {
   const EntryEditor({super.key});
@@ -21,10 +25,7 @@ class _EntryEditorState extends State<EntryEditor> {
   bool private = false;
   List<String> imageUrls = [];
   late Map<String, dynamic> pageData =
-  ModalRoute
-      .of(context)!
-      .settings
-      .arguments as Map<String, dynamic>;
+      ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
   late Entry? entry = pageData["entry"] as Entry?;
   late int uid = pageData["uid"];
   EntryService entryService = EntryService();
@@ -40,11 +41,11 @@ class _EntryEditorState extends State<EntryEditor> {
         child: Center(
           child: Column(
             children: [
-              const Text("Title"),
+              const Text("Titel"),
               TextField(
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  hintText: 'Enter your Title',
+                  hintText: 'Titel hier eingeben',
                 ),
                 autofocus: true,
                 keyboardType: TextInputType.text,
@@ -57,11 +58,11 @@ class _EntryEditorState extends State<EntryEditor> {
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
               ),
-              const Text("Content"),
+              const Text("Inhalt"),
               TextField(
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  hintText: 'Enter your Text',
+                  hintText: 'Inhalt hier eingeben',
                 ),
                 maxLines: null,
                 keyboardType: TextInputType.multiline,
@@ -78,70 +79,72 @@ class _EntryEditorState extends State<EntryEditor> {
               avaiableTags.isEmpty
                   ? const Text("Keine Tags mehr verfügbar")
                   : Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  DropdownButton(
-                      value: dropDownValue,
-                      items: avaiableTags
-                          .map((e) =>
-                          DropdownMenuItem(
-                            value: e,
-                            child: Text(e),
-                          ))
-                          .toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          dropDownValue = value!;
-                        });
-                      }),
-                  const Padding(padding: EdgeInsets.only(left: 30)),
-                  FloatingActionButton(
-                      child: const Text("Add Tag"),
-                      onPressed: () {
-                        setState(() {
-                          avaiableTags.remove(dropDownValue);
-                          chosenTags.add(dropDownValue);
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        DropdownButton(
+                            value: dropDownValue,
+                            items: avaiableTags
+                                .map((e) => DropdownMenuItem(
+                                      value: e,
+                                      child: Text(e),
+                                    ))
+                                .toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                dropDownValue = value!;
+                              });
+                            }),
+                        const Padding(padding: EdgeInsets.only(left: 30)),
+                        FloatingActionButton(
+                            heroTag: "tag",
+                            child: const Icon(
+                              Icons.add,
+                              color: Colors.green,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                avaiableTags.remove(dropDownValue);
+                                chosenTags.add(dropDownValue);
 
-                          if (avaiableTags.isEmpty) {
-                            dropDownValue = "";
-                          } else {
-                            dropDownValue = avaiableTags.first;
-                          }
-                        });
-                      })
-                ],
-              ),
+                                if (avaiableTags.isEmpty) {
+                                  dropDownValue = "";
+                                } else {
+                                  dropDownValue = avaiableTags.first;
+                                }
+                              });
+                            })
+                      ],
+                    ),
               Flex(
                 mainAxisSize: MainAxisSize.min,
                 direction: Axis.vertical,
                 children: chosenTags
-                    .map((e) =>
-                    Flexible(
-                      fit: FlexFit.loose,
-                      child: Row(
-                        children: [
-                          Text(e),
-                          IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  chosenTags.remove(e);
-                                  avaiableTags.add(e);
-                                  dropDownValue = avaiableTags.first;
-                                });
-                              },
-                              icon: const Icon(
-                                Icons.delete,
-                                color: Colors.red,
-                              ))
-                        ],
-                      ),
-                    ))
+                    .map((e) => Flexible(
+                          fit: FlexFit.loose,
+                          child: Row(
+                            children: [
+                              Text(e),
+                              IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      chosenTags.remove(e);
+                                      avaiableTags.add(e);
+                                      dropDownValue = avaiableTags.first;
+                                    });
+                                  },
+                                  icon: const Icon(
+                                    Icons.delete,
+                                    color: Colors.red,
+                                  ))
+                            ],
+                          ),
+                        ))
                     .toList(),
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
               ),
-              const Text("Private"),
+              const Text("Privat"),
               Checkbox(
                 value: private,
                 onChanged: (bool? value) {
@@ -153,8 +156,8 @@ class _EntryEditorState extends State<EntryEditor> {
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
               ),
-              const Text("Images"),
-              TextField(
+              const Text("Bilder"),
+              /*TextField(
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Enter Image Paths with ,',
@@ -166,7 +169,42 @@ class _EntryEditorState extends State<EntryEditor> {
                     imageUrls = value.split(",");
                   });
                 },
-              ),
+              ),*/
+
+              FloatingActionButton(
+                  backgroundColor: Colors.red,
+                  heroTag: "image",
+                  onPressed: () async {
+                    print("noch da");
+                    FilePickerResult? result;
+                    if (UniversalPlatform.isWeb) {
+                      result = await FilePickerWeb.platform.pickFiles(
+                          allowMultiple: true,
+                          type: FileType.custom,
+                          allowedExtensions: ["png", "jpg", "jpeg"]);
+
+                    } else {
+                      result = await FilePicker.platform.pickFiles(
+                          allowMultiple: true,
+                          type: FileType.custom,
+                          allowedExtensions: ["png", "jpg", "jpeg"]);
+                    }
+
+                    if (result != null) {
+                      var name = "upload/$uid-${DateTime.now().toString()}.${result.files.first.extension!}";
+                      var storageRef = FirebaseStorage.instance.ref(name);
+                      await storageRef.putData(result.files.first.bytes!);
+
+                      var downloadUrl = await storageRef.getDownloadURL();
+                      imageUrls.add(downloadUrl + name);
+                      print(imageUrls);
+
+                    } else {
+                      print("Abgebrochen");
+                    }
+
+                  }),
+
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
               ),
@@ -174,23 +212,24 @@ class _EntryEditorState extends State<EntryEditor> {
                   onPressed: enableButton()
                       ? null
                       : () async {
-                    var service = IdService();
-                    await service.init();
+                          var service = IdService();
+                          await service.init();
 
-                    entry = Entry.withNewID(title: title,
-                        content: content,
-                        tags: tags,
-                        private: private,
-                        imageUrls: imageUrls,
-                        created: DateTime.now(),
-                        creatorId: uid,
-                        idService: service);
+                          entry = Entry.withNewID(
+                              title: title,
+                              content: content,
+                              tags: tags,
+                              private: private,
+                              imageUrls: imageUrls,
+                              created: DateTime.now(),
+                              creatorId: uid,
+                              idService: service);
 
-                    await entryService.addEntry(entry!);
-                    UserService()
-                        .addToCreated(entry!.id, uid)
-                        .whenComplete(() => Navigator.pop(context));
-                  },
+                          await entryService.addEntry(entry!);
+                          UserService()
+                              .addToCreated(entry!.id, uid)
+                              .whenComplete(() => Navigator.pop(context));
+                        },
                   child: const Text("Speichern"))
             ],
           ),

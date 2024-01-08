@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:memo_share/components/entryEditor.dart';
 import 'package:memo_share/pages/entryPage.dart';
@@ -7,11 +8,16 @@ import 'package:memo_share/pages/favorites.dart';
 import 'package:memo_share/pages/liked.dart';
 import 'package:memo_share/pages/register.dart';
 import 'package:memo_share/components/entryUpdater.dart';
+import 'firebase_options.dart';
 
 import 'pages/home.dart';
 import 'pages/login.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 

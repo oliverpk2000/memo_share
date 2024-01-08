@@ -1,8 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:file_picker/_internal/file_picker_web.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:memo_share/components/userForm.dart';
 import 'package:memo_share/services/UserService.dart';
+import 'package:universal_platform/universal_platform.dart';
 import '../domain/user.dart';
 
 class Login extends StatefulWidget {
@@ -64,7 +68,37 @@ class _LoginState extends State<Login> {
                 onPressed: () {
                   Navigator.of(context).pushNamed("/register");
                 },
-                child: const Text('Registrieren'))
+                child: const Text('Registrieren')),
+
+            FloatingActionButton(
+              backgroundColor: Colors.red,
+                heroTag: "image",
+                onPressed: () async {
+                print("noch da");
+                FilePickerResult? result;
+                if (UniversalPlatform.isWeb) {
+                  result = await FilePickerWeb.platform.pickFiles(
+                    allowMultiple: true,
+                    type: FileType.custom,
+                      allowedExtensions: ["png", "jpg", "jpeg"]);
+
+                } else {
+                  result = await FilePicker.platform.pickFiles(
+                      allowMultiple: true,
+                      type: FileType.custom,
+                      allowedExtensions: ["png", "jpg", "jpeg"]);
+                }
+
+                if (result != null) {
+                  var storageRef = FirebaseStorage.instance.ref("upload/1${result.files.first.name}");
+                  await storageRef.putData(result.files.first.bytes!);
+                  print(await storageRef.getDownloadURL());
+
+                } else {
+                  print("Abgebrochen");
+                }
+
+                }),
           ],
         ));
   }
