@@ -24,9 +24,13 @@ class _EntryUpdaterState extends State<EntryUpdater> {
   late int uid = entry!.creatorId;
   EntryService entryService = EntryService();
 
-
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      for (String tag in chosenTags) {
+        avaiableTags.remove(tag);
+      }
+    });
     return Scaffold(
       appBar: AppBar(
         title: const Text("Editor"),
@@ -96,9 +100,11 @@ class _EntryUpdaterState extends State<EntryUpdater> {
                   FloatingActionButton(
                       child: const Text("Add Tag"),
                       onPressed: () {
-                        setState(() {
+                        setState( () {
                           avaiableTags.remove(dropDownValue);
                           chosenTags.add(dropDownValue);
+
+
 
                           if (avaiableTags.isEmpty) {
                             dropDownValue = "";
