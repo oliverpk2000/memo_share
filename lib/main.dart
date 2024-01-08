@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:memo_share/components/entryEditor.dart';
-import 'package:memo_share/pages/EntryPage.dart';
-import 'package:memo_share/pages/Hub.dart';
-import 'package:memo_share/pages/Userprofile.dart';
+import 'package:memo_share/pages/entryPage.dart';
+import 'package:memo_share/pages/hub.dart';
+import 'package:memo_share/pages/userprofile.dart';
 import 'package:memo_share/pages/favorites.dart';
 import 'package:memo_share/pages/liked.dart';
 import 'package:memo_share/pages/register.dart';

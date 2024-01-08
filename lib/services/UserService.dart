@@ -30,7 +30,7 @@ class UserService {
 
       return users;
     } else {
-      throw "Somwthing went wrong while getting all Users";
+      throw "Something went wrong while getting all Users";
     }
   }
 
