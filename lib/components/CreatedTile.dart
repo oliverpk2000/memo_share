@@ -46,8 +46,8 @@ class _CreatedTileState extends State<CreatedTile> {
 
             IconButton(
               onPressed: () {
-                print('unfinished lmoa');
-                //TODO: link to ertl's entry editor
+                Navigator.pushNamed(context, "/updater",
+                    arguments: widget.entry);
               },
               tooltip: "Editieren",
               icon: const Icon(Icons.edit),
