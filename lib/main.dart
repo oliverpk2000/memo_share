@@ -6,6 +6,7 @@ import 'package:memo_share/pages/Userprofile.dart';
 import 'package:memo_share/pages/favorites.dart';
 import 'package:memo_share/pages/liked.dart';
 import 'package:memo_share/pages/register.dart';
+import 'package:memo_share/components/entryUpdater.dart';
 
 import 'pages/home.dart';
 import 'pages/login.dart';
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
         "/register": (context) => const Register(),
         "/entry": (context) => const EntryPage(title: "Entry"),
         "/editor": (context) => const EntryEditor(),
+        "/updater": (context) => const EntryUpdater(),
         "/favorites": (context) => const Favorites(title: "Favoriten"),
         "/liked" : (context) => const Liked(title: "Liked"),
         "/profile" : (context) => const Userprofile(title: "Profil",),
