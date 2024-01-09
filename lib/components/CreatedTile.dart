@@ -6,9 +6,16 @@ import '../domain/entry.dart';
 
 class CreatedTile extends StatefulWidget {
   CreatedTile(
-      {super.key, required this.entry, required this.deleteFunction, required this.icon, required this.favorite, required this.unfavorite});
+      {super.key,
+      required this.entry,
+      required this.deleteFunction,
+      required this.icon,
+      required this.favorite,
+      required this.unfavorite,
+      required this.update});
 
   final Entry entry;
+  final Function update;
   final Function deleteFunction;
   final Function favorite;
   final Function unfavorite;
@@ -21,12 +28,10 @@ class CreatedTile extends StatefulWidget {
 class _CreatedTileState extends State<CreatedTile> {
   late IconData favIcon = widget.icon;
 
-
   @override
   Widget build(BuildContext context) {
     if (widget.icon != favIcon) {
       favIcon = widget.icon;
-
     }
 
     return ListTile(
@@ -41,17 +46,20 @@ class _CreatedTileState extends State<CreatedTile> {
                   await widget.deleteFunction(widget.entry.id);
                 },
                 tooltip: "Entfernen",
-                icon: const Icon(Icons.delete, color: Colors.red,)),
-
+                icon: const Icon(
+                  Icons.delete,
+                  color: Colors.red,
+                )),
             IconButton(
-              onPressed: () {
-                print('unfinished lmoa');
-                //TODO: link to ertl's entry editor
+              onPressed: () async {
+                await Navigator.pushNamed(context, "/updater",
+                    arguments: widget.entry);
+                print("wtf");
+                widget.update(widget.entry.creatorId);
               },
               tooltip: "Editieren",
               icon: const Icon(Icons.edit),
             ),
-
             IconButton(
                 onPressed: () {
                   setState(() {
@@ -66,8 +74,13 @@ class _CreatedTileState extends State<CreatedTile> {
                     }
                   });
                 },
-                tooltip: favIcon == Icons.star_border ? "Favorit hinzufügen" : "Favorit entfernen",
-                icon: Icon(favIcon, color: Colors.orange,)),
+                tooltip: favIcon == Icons.star_border
+                    ? "Favorit hinzufügen"
+                    : "Favorit entfernen",
+                icon: Icon(
+                  favIcon,
+                  color: Colors.orange,
+                )),
           ],
         ),
       ),

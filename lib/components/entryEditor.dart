@@ -11,7 +11,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:universal_platform/universal_platform.dart';
 
 class EntryEditor extends StatefulWidget {
-  const EntryEditor({super.key});
+  const EntryEditor({super.key, required String title});
 
   @override
   State<EntryEditor> createState() => _EntryEditorState();
@@ -39,7 +39,10 @@ class _EntryEditorState extends State<EntryEditor> {
       inAsyncCall: loading,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Editor", style: TextStyle(color: Colors.white),),
+          title: const Text(
+            "Editor",
+            style: TextStyle(color: Colors.white),
+          ),
           backgroundColor: Colors.lightGreen,
         ),
         body: Padding(
@@ -47,7 +50,10 @@ class _EntryEditorState extends State<EntryEditor> {
           child: Center(
             child: ListView(
               children: [
-                const Center(child: Text("Titel")),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: Center(child: Text("Titel")),
+                ),
                 TextField(
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
@@ -65,7 +71,6 @@ class _EntryEditorState extends State<EntryEditor> {
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: Center(child: Text("Inhalt")),
                 ),
-
                 TextField(
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
@@ -81,9 +86,8 @@ class _EntryEditorState extends State<EntryEditor> {
                 ),
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 10),
-                  child:  Center(child: Text("Tags")),
+                  child: Center(child: Text("Tags")),
                 ),
-
                 avaiableTags.isEmpty
                     ? const Center(child: Text("Keine Tags mehr verfügbar"))
                     : Row(

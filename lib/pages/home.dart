@@ -206,6 +206,7 @@ class _HomeState extends State<Home> {
                                       : Icons.star_border,
                                   favorite: favoriteCreated,
                                   unfavorite: unfavoriteCreated,
+                                  update: update,
                                 ),
                               ));
                         }))
@@ -269,6 +270,19 @@ class _HomeState extends State<Home> {
       setState(() {
         loading = false;
       });
+    });
+  }
+
+  update(int uid) {
+    setState(() {
+      loading = true;
+    });
+
+    getUser(uid)
+        .whenComplete(() {
+          setState(() {
+            loading = false;
+          });
     });
   }
 }

@@ -6,7 +6,7 @@ import 'package:memo_share/services/UserService.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class Hub extends StatefulWidget {
-  const Hub({super.key});
+  const Hub({super.key, required String title});
 
   @override
   State<Hub> createState() => _HubState();

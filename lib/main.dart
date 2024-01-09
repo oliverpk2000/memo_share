@@ -36,16 +36,16 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: "/login",
       routes: {
-        "/home": (context) =>  const Home(title:"MemoShare"),
-        "/login": (context) => const Login(),
-        "/register": (context) => const Register(),
+        "/home": (context) =>  const Home(title:"Home"),
+        "/login": (context) => const Login(title: "Login"),
+        "/register": (context) => const Register(title: "Register"),
         "/entry": (context) => const EntryPage(title: "Entry"),
-        "/editor": (context) => const EntryEditor(),
-        "/updater": (context) => const EntryUpdater(),
+        "/editor": (context) => const EntryEditor(title: "Editor"),
+        "/updater": (context) => const EntryUpdater(title: "Updater"),
         "/favorites": (context) => const Favorites(title: "Favoriten"),
         "/liked" : (context) => const Liked(title: "Liked"),
         "/profile" : (context) => const Userprofile(title: "Profil",),
-        "/hub" : (context) => const Hub(),
+        "/hub" : (context) => const Hub(title: "Hub"),
       },
     );
   }

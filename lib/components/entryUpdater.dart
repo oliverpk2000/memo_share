@@ -6,7 +6,7 @@ import 'package:memo_share/services/IdService.dart';
 import 'package:memo_share/services/UserService.dart';
 
 class EntryUpdater extends StatefulWidget {
-  const EntryUpdater({super.key});
+  const EntryUpdater({super.key, required String title});
 
   @override
   State<EntryUpdater> createState() => _EntryUpdaterState();
@@ -30,6 +30,8 @@ class _EntryUpdaterState extends State<EntryUpdater> {
       for (String tag in chosenTags) {
         avaiableTags.remove(tag);
       }
+      print(avaiableTags);
+      print(chosenTags);
     });
     return Scaffold(
       appBar: AppBar(
@@ -37,11 +39,14 @@ class _EntryUpdaterState extends State<EntryUpdater> {
         backgroundColor: Colors.lightGreen,
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30.0),
+        padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 15),
         child: Center(
           child: ListView(
             children: [
-              const Center(child: Text("Titel")),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: Center(child: Text("Titel")),
+              ),
               TextFormField(
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -58,12 +63,13 @@ class _EntryUpdaterState extends State<EntryUpdater> {
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                child: Text("Inhalt"),
               ),
-              const Text("Inhalt"),
+
               TextFormField(
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  hintText: 'Inhalt des Beitrages eingeben',
+                  hintText: 'Inhalt des Eintrags eingeben',
                 ),
                 initialValue: content,
                 maxLines: null,
@@ -76,16 +82,17 @@ class _EntryUpdaterState extends State<EntryUpdater> {
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                child: Text("Tags"),
               ),
-              const Text("Tags"),
+
               avaiableTags.isEmpty
-                  ? const Text("Keine Tags mehr verfügbar")
+                  ? const Center(child: Text("Keine Tags mehr verfügbar"))
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         DropdownButton(
                             value: dropDownValue,
-                            items: avaiableTags
+                            items: tags//avaiableTags
                                 .map((e) => DropdownMenuItem(
                                       value: e,
                                       child: Text(e),
@@ -145,8 +152,9 @@ class _EntryUpdaterState extends State<EntryUpdater> {
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                child: Text("Privat"),
               ),
-              const Text("Privat"),
+
               Checkbox(
                 value: private,
                 onChanged: (bool? value) {
@@ -176,30 +184,32 @@ class _EntryUpdaterState extends State<EntryUpdater> {
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
               ),
-              TextButton(
-                  onPressed: enableButton()
-                      ? null
-                      : () async {
-                          var service = IdService();
-                          await service.init();
+              Center(
+                child: TextButton(
+                    onPressed: enableButton()
+                        ? null
+                        : () async {
+                            var service = IdService();
+                            await service.init();
 
-                          entry = Entry(
-                            id: entry.id,
-                              title: title,
-                              content: content,
-                              tags: tags,
-                              private: private,
-                              imageUrls: imageUrls,
-                              created: DateTime.now(),
-                              creatorId: uid,
-                          );
+                            entry = Entry(
+                              id: entry.id,
+                                title: title,
+                                content: content,
+                                tags: chosenTags,
+                                private: private,
+                                imageUrls: imageUrls,
+                                created: DateTime.now(),
+                                creatorId: uid,
+                            );
 
-                          await entryService.updateEntry(entry, entry.id);
-                          UserService()
-                              .addToCreated(entry.id, uid)
-                              .whenComplete(() => Navigator.pop(context));
-                        },
-                  child: const Text("Speichern"))
+                            await entryService.updateEntry(entry, entry.id);
+                            UserService()
+                                .addToCreated(entry.id, uid)
+                                .whenComplete(() => Navigator.pop(context));
+                          },
+                    child: const Text("Speichern")),
+              )
             ],
           ),
         ),
