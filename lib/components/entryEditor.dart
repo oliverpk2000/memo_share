@@ -39,14 +39,15 @@ class _EntryEditorState extends State<EntryEditor> {
       inAsyncCall: loading,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Editor"),
+          title: const Text("Editor", style: TextStyle(color: Colors.white),),
+          backgroundColor: Colors.lightGreen,
         ),
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+          padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 15.0),
           child: Center(
-            child: Column(
+            child: ListView(
               children: [
-                const Text("Titel"),
+                const Center(child: Text("Titel")),
                 TextField(
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
@@ -61,9 +62,10 @@ class _EntryEditorState extends State<EntryEditor> {
                   },
                 ),
                 const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: Center(child: Text("Inhalt")),
                 ),
-                const Text("Inhalt"),
+
                 TextField(
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
@@ -78,11 +80,12 @@ class _EntryEditorState extends State<EntryEditor> {
                   },
                 ),
                 const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child:  Center(child: Text("Tags")),
                 ),
-                const Text("Tags"),
+
                 avaiableTags.isEmpty
-                    ? const Text("Keine Tags mehr verfügbar")
+                    ? const Center(child: Text("Keine Tags mehr verfügbar"))
                     : Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -128,6 +131,7 @@ class _EntryEditorState extends State<EntryEditor> {
                       .map((e) => Flexible(
                             fit: FlexFit.loose,
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(e),
                                 IconButton(
@@ -149,8 +153,8 @@ class _EntryEditorState extends State<EntryEditor> {
                 ),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: Center(child: Text("Privat")),
                 ),
-                const Text("Privat"),
                 Checkbox(
                   value: private,
                   onChanged: (bool? value) {
@@ -162,81 +166,117 @@ class _EntryEditorState extends State<EntryEditor> {
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                 ),
-                FloatingActionButton(
-                    backgroundColor: Colors.lightBlueAccent,
-                    heroTag: "image",
-                    onPressed: () async {
-                      FilePickerResult? result;
-                      if (UniversalPlatform.isWeb) {
-                        result = await FilePickerWeb.platform.pickFiles(
-                            type: FileType.custom,
-                            allowedExtensions: ["png", "jpg", "jpeg"]);
-                      } else {
-                        result = await FilePicker.platform.pickFiles(
-                            type: FileType.custom,
-                            allowedExtensions: ["png", "jpg", "jpeg"]);
-                      }
-
-                      if (result != null && added.length < 4) {
-                        var name =
-                            "upload/$uid/${DateTime.now().toString()}.${result.files.first.extension!}";
-
-                        added[name] = result;
-                        realnames.add(result.files.first.name);
-
-                        setState(() {
-                          errorLabel = "";
-                        });
-                      } else {
-                        if (added.length == 4) {
-                          setState(() {
-                            errorLabel = "Fehler maximal 4 Bilder erlaubt";
-                          });
+                Center(
+                  child: FloatingActionButton(
+                      backgroundColor: Colors.lightBlueAccent,
+                      heroTag: "image",
+                      onPressed: () async {
+                        FilePickerResult? result;
+                        if (UniversalPlatform.isWeb) {
+                          result = await FilePickerWeb.platform.pickFiles(
+                              type: FileType.custom,
+                              allowedExtensions: ["png", "jpg", "jpeg"]);
+                        } else {
+                          result = await FilePicker.platform.pickFiles(
+                              type: FileType.custom,
+                              allowedExtensions: ["png", "jpg", "jpeg"]);
                         }
-                        print("Abgebrochen");
-                      }
-                    },
-                    child: const Icon(
-                      Icons.image,
-                      color: Colors.white,
-                    )),
-                Text(
-                  errorLabel,
-                  style: const TextStyle(color: Colors.red),
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-                ),
-                TextButton(
-                    onPressed: enableButton()
-                        ? null
-                        : () async {
+
+                        if (result != null && added.length < 4) {
+                          var name =
+                              "upload/$uid/${DateTime.now().toString()}.${result.files.first.extension!}";
+
+                          added[name] = result;
+                          realnames.add(result.files.first.name);
+                          setState(() {});
+                        } else {
+                          if (added.length == 4) {
                             setState(() {
-                              loading = true;
+                              errorLabel = "Fehler maximal 4 Bilder erlaubt";
                             });
+                          }
+                          print("Abgebrochen");
+                        }
+                      },
+                      child: const Icon(
+                        Icons.image,
+                        color: Colors.white,
+                      )),
+                ),
+                Flex(
+                  mainAxisSize: MainAxisSize.min,
+                  direction: Axis.vertical,
+                  children: realnames
+                      .map((e) => Flexible(
+                            fit: FlexFit.loose,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(e),
+                                IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        var toDelete = added.entries
+                                            .elementAt(realnames.indexOf(e))
+                                            .key;
+                                        added.removeWhere(
+                                            (key, value) => key == toDelete);
+                                        realnames.remove(e);
 
-                            var service = IdService();
-                            await service.init();
-                            await uploadImages();
+                                        setState(() {
+                                          errorLabel = "";
+                                        });
+                                      });
+                                    },
+                                    icon: const Icon(
+                                      Icons.delete,
+                                      color: Colors.red,
+                                    ))
+                              ],
+                            ),
+                          ))
+                      .toList(),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  child: Text(
+                    errorLabel,
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                ),
+                Center(
+                  child: TextButton(
+                      onPressed: enableButton()
+                          ? null
+                          : () async {
+                              setState(() {
+                                loading = true;
+                              });
 
-                            entry = Entry.withNewID(
-                                title: title,
-                                content: content,
-                                tags: chosenTags,
-                                private: private,
-                                imageUrls: imageUrls,
-                                created: DateTime.now(),
-                                creatorId: uid,
-                                idService: service);
+                              var service = IdService();
+                              await service.init();
+                              await uploadImages();
 
-                            print(entry);
+                              entry = Entry.withNewID(
+                                  title: title,
+                                  content: content,
+                                  tags: chosenTags,
+                                  private: private,
+                                  imageUrls: imageUrls,
+                                  created: DateTime.now(),
+                                  creatorId: uid,
+                                  idService: service);
 
-                            await entryService.addEntry(entry);
-                            UserService()
-                                .addToCreated(entry.id, uid)
-                                .whenComplete(() => Navigator.pop(context));
-                          },
-                    child: const Text("Speichern"))
+                              print(entry);
+
+                              await entryService.addEntry(entry);
+                              UserService()
+                                  .addToCreated(entry.id, uid)
+                                  .whenComplete(() => Navigator.pop(context));
+                            },
+                      child: const Text("Speichern")),
+                )
               ],
             ),
           ),

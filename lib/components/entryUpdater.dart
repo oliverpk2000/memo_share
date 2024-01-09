@@ -13,15 +13,15 @@ class EntryUpdater extends StatefulWidget {
 }
 
 class _EntryUpdaterState extends State<EntryUpdater> {
-  late Entry? entry = ModalRoute.of(context)!.settings.arguments as Entry?;
-  late String title = entry!.title;
-  late String content = entry!.content;
-  late List<String> chosenTags = entry!.tags;
+  late Entry entry = ModalRoute.of(context)!.settings.arguments as Entry;
+  late String title = entry.title;
+  late String content = entry.content;
+  late List<String> chosenTags = entry.tags;
   List<String> avaiableTags = List.of(tags);
   String dropDownValue = tags.first;
-  late bool private = entry!.private;
-  late List<String> imageUrls = entry!.imageUrls;
-  late int uid = entry!.creatorId;
+  late bool private = entry.private;
+  late List<String> imageUrls = entry.imageUrls;
+  late int uid = entry.creatorId;
   EntryService entryService = EntryService();
 
   @override
@@ -34,13 +34,14 @@ class _EntryUpdaterState extends State<EntryUpdater> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Editor"),
+        backgroundColor: Colors.lightGreen,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30.0),
         child: Center(
-          child: Column(
+          child: ListView(
             children: [
-              const Text("Titel"),
+              const Center(child: Text("Titel")),
               TextFormField(
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -183,7 +184,7 @@ class _EntryUpdaterState extends State<EntryUpdater> {
                           await service.init();
 
                           entry = Entry(
-                            id: entry!.id,
+                            id: entry.id,
                               title: title,
                               content: content,
                               tags: tags,
@@ -193,9 +194,9 @@ class _EntryUpdaterState extends State<EntryUpdater> {
                               creatorId: uid,
                           );
 
-                          await entryService.updateEntry(entry!, entry!.id);
+                          await entryService.updateEntry(entry, entry.id);
                           UserService()
-                              .addToCreated(entry!.id, uid)
+                              .addToCreated(entry.id, uid)
                               .whenComplete(() => Navigator.pop(context));
                         },
                   child: const Text("Speichern"))
@@ -207,23 +208,7 @@ class _EntryUpdaterState extends State<EntryUpdater> {
   }
 
   bool enableButton() {
-    setState(() {
-      entry = Entry(
-          id: 0,
-          title: title,
-          content: content,
-          tags: chosenTags,
-          private: private,
-          imageUrls: imageUrls,
-          created: DateTime.now(),
-          creatorId: uid);
-    });
-
-    if (entry!.title.isEmpty || entry!.content.isEmpty) {
-      return true;
-    } else {
-      return false;
-    }
+    return title.isEmpty || content.isEmpty;
   }
 
   String urlsToString(List<String> urls) {
