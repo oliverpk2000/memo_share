@@ -177,7 +177,7 @@ class _EntryEditorState extends State<EntryEditor> {
                     }
 
                     if (result != null && added.length < 4) {
-                      var name = "upload/$uid-${DateTime.now().toString()}.${result.files.first.extension!}";
+                      var name = "upload/$uid/${DateTime.now().toString()}.${result.files.first.extension!}";
 
                       added[name] = result;
                       realnames.add(result.files.first.name);
