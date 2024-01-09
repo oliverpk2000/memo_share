@@ -40,6 +40,7 @@ class _UserFormState extends State<UserForm> {
             TextField(
               controller: passwordControler,
               autofocus: true,
+              obscureText: true,
               onChanged: (value) {
                 setState(() {
                   password = value;
