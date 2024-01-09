@@ -46,8 +46,7 @@ class _UserprofileState extends State<Userprofile> {
             TextField(
               onChanged: (newPassword) {
                 setState(() {
-                  password =
-                      sha224.convert(utf8.encode(newPassword)).toString();
+                  password = newPassword;
                 });
               },
             ),
@@ -67,6 +66,7 @@ class _UserprofileState extends State<Userprofile> {
   }
 
   Future<void> pushPassword(String password, int id) async {
-    await UserService().changePassword(password, id);
+    var hash = sha224.convert(utf8.encode(password)).toString();
+    await UserService().changePassword(hash, id);
   }
 }
