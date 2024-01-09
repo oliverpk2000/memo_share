@@ -233,7 +233,10 @@ class _HomeState extends State<Home> {
   }
 
   deleteCreated(entryId) async {
-    loading = true;
+    setState(() {
+      loading = true;
+    });
+
     await EntryService().deleteEntry(entryId);
     await UserService().deleteCreated(entryId, uid);
     getUser(uid).whenComplete(() {
@@ -244,7 +247,10 @@ class _HomeState extends State<Home> {
   }
 
   unfavoriteCreated(entryId) async {
-    loading = true;
+    setState(() {
+      loading = true;
+    });
+
     await UserService().deleteFavorite(entryId, uid);
     getUser(uid).whenComplete(() {
       setState(() {
@@ -254,7 +260,10 @@ class _HomeState extends State<Home> {
   }
 
   favoriteCreated(entryId) async {
-    loading = true;
+    setState(() {
+      loading = true;
+    });
+
     await UserService().addToFavorite(entryId, uid);
     getUser(uid).whenComplete(() {
       setState(() {
