@@ -23,12 +23,14 @@ class _EntryEditorState extends State<EntryEditor> {
   List<String> avaiableTags = List.of(tags);
   String dropDownValue = tags.first;
   bool private = false;
+  List<String> realnames = [];
+  Map<String, FilePickerResult> added = {};
   List<String> imageUrls = [];
-  late Map<String, dynamic> pageData =
-      ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-  late Entry? entry = pageData["entry"] as Entry?;
-  late int uid = pageData["uid"];
+  late int uid =
+      ModalRoute.of(context)!.settings.arguments as int;
   EntryService entryService = EntryService();
+  late Entry entry;
+  String errorLabel = "";
 
   @override
   Widget build(BuildContext context) {
@@ -97,9 +99,10 @@ class _EntryEditorState extends State<EntryEditor> {
                         const Padding(padding: EdgeInsets.only(left: 30)),
                         FloatingActionButton(
                             heroTag: "tag",
+                            backgroundColor: Colors.green,
                             child: const Icon(
                               Icons.add,
-                              color: Colors.green,
+                              color: Colors.white,
                             ),
                             onPressed: () {
                               setState(() {
@@ -156,42 +159,48 @@ class _EntryEditorState extends State<EntryEditor> {
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
               ),
-              const Text("Bilder"),
 
               FloatingActionButton(
                   backgroundColor: Colors.lightBlueAccent,
                   heroTag: "image",
                   onPressed: () async {
-                    print("noch da");
                     FilePickerResult? result;
                     if (UniversalPlatform.isWeb) {
                       result = await FilePickerWeb.platform.pickFiles(
-                          allowMultiple: true,
                           type: FileType.custom,
                           allowedExtensions: ["png", "jpg", "jpeg"]);
 
                     } else {
                       result = await FilePicker.platform.pickFiles(
-                          allowMultiple: true,
                           type: FileType.custom,
                           allowedExtensions: ["png", "jpg", "jpeg"]);
                     }
 
-                    if (result != null && imageUrls.length < 4) {
+                    if (result != null && added.length < 4) {
                       var name = "upload/$uid-${DateTime.now().toString()}.${result.files.first.extension!}";
-                      var storageRef = FirebaseStorage.instance.ref(name);
-                      await storageRef.putData(result.files.first.bytes!);
 
-                      var downloadUrl = await storageRef.getDownloadURL();
-                      imageUrls.add(downloadUrl + name);
-                      print(imageUrls);
+                      added[name] = result;
+                      realnames.add(result.files.first.name);
+                      print(added);
+                      print(realnames);
+
+                      setState(() {
+                        errorLabel = "";
+                      });
 
                     } else {
+                      if (added.length == 4) {
+                        setState(() {
+                          errorLabel = "Fehler maximal 4 Bilder erlaubt";
+                        });
+                      }
                       print("Abgebrochen");
                     }
 
                   },
                   child: const Icon(Icons.image, color: Colors.white,)),
+
+              Text(errorLabel, style: const TextStyle(color: Colors.red),),
 
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
@@ -203,6 +212,16 @@ class _EntryEditorState extends State<EntryEditor> {
                           var service = IdService();
                           await service.init();
 
+                          added.forEach((key, value) async {
+                            var storageRef = FirebaseStorage.instance.ref(key);
+                            await storageRef.putData(value.files.first.bytes!);
+
+                            var downloadUrl = await storageRef.getDownloadURL();
+                            imageUrls.add(downloadUrl + key);
+                          });
+
+                          print(imageUrls);
+
                           entry = Entry.withNewID(
                               title: title,
                               content: content,
@@ -213,9 +232,11 @@ class _EntryEditorState extends State<EntryEditor> {
                               creatorId: uid,
                               idService: service);
 
-                          await entryService.addEntry(entry!);
+                          print(entry);
+
+                          await entryService.addEntry(entry);
                           UserService()
-                              .addToCreated(entry!.id, uid)
+                              .addToCreated(entry.id, uid)
                               .whenComplete(() => Navigator.pop(context));
                         },
                   child: const Text("Speichern"))

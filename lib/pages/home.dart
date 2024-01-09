@@ -215,7 +215,7 @@ class _HomeState extends State<Home> {
           onPressed: () async {
             loading = true;
             await Navigator.pushNamed(context, "/editor",
-                arguments: {"uid": user.id});
+                arguments: user.id);
 
             getUser(uid).whenComplete(() {
               setState(() {
