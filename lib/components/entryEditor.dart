@@ -157,22 +157,9 @@ class _EntryEditorState extends State<EntryEditor> {
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
               ),
               const Text("Bilder"),
-              /*TextField(
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Enter Image Paths with ,',
-                ),
-                autofocus: true,
-                keyboardType: TextInputType.text,
-                onChanged: (value) {
-                  setState(() {
-                    imageUrls = value.split(",");
-                  });
-                },
-              ),*/
 
               FloatingActionButton(
-                  backgroundColor: Colors.red,
+                  backgroundColor: Colors.lightBlueAccent,
                   heroTag: "image",
                   onPressed: () async {
                     print("noch da");
@@ -190,7 +177,7 @@ class _EntryEditorState extends State<EntryEditor> {
                           allowedExtensions: ["png", "jpg", "jpeg"]);
                     }
 
-                    if (result != null) {
+                    if (result != null && imageUrls.length < 4) {
                       var name = "upload/$uid-${DateTime.now().toString()}.${result.files.first.extension!}";
                       var storageRef = FirebaseStorage.instance.ref(name);
                       await storageRef.putData(result.files.first.bytes!);
@@ -203,7 +190,8 @@ class _EntryEditorState extends State<EntryEditor> {
                       print("Abgebrochen");
                     }
 
-                  }),
+                  },
+                  child: const Icon(Icons.image, color: Colors.white,)),
 
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
@@ -218,7 +206,7 @@ class _EntryEditorState extends State<EntryEditor> {
                           entry = Entry.withNewID(
                               title: title,
                               content: content,
-                              tags: tags,
+                              tags: chosenTags,
                               private: private,
                               imageUrls: imageUrls,
                               created: DateTime.now(),
@@ -239,22 +227,6 @@ class _EntryEditorState extends State<EntryEditor> {
   }
 
   bool enableButton() {
-    setState(() {
-      entry = Entry(
-          id: 0,
-          title: title,
-          content: content,
-          tags: chosenTags,
-          private: private,
-          imageUrls: imageUrls,
-          created: DateTime.now(),
-          creatorId: uid);
-    });
-
-    if (entry!.title.isEmpty || entry!.content.isEmpty) {
-      return true;
-    } else {
-      return false;
-    }
+    return title.isEmpty || content.isEmpty;
   }
 }

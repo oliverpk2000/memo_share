@@ -77,7 +77,8 @@ class _HubState extends State<Hub> {
                 tooltip: sortLabel,
                 icon: const Icon(
                   Icons.abc,
-                  size: 35,
+                  size: 30,
+                  color: Colors.white,
                 )),
 
             IconButton(
@@ -99,7 +100,8 @@ class _HubState extends State<Hub> {
                 tooltip: dateLabel,
                 icon: const Icon(
                   Icons.date_range,
-                  size: 35,
+                  size: 30,
+                  color: Colors.white,
                 )),
           ],
         ),

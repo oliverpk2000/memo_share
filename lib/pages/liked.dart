@@ -70,7 +70,8 @@ class _FavoritesState extends State<Liked> {
                 tooltip: sortLabel,
                 icon: const Icon(
                   Icons.abc,
-                  size: 35,
+                  size: 30,
+                  color: Colors.white,
                 )),
 
             IconButton(
@@ -92,7 +93,8 @@ class _FavoritesState extends State<Liked> {
                 tooltip: dateLabel,
                 icon: const Icon(
                   Icons.date_range,
-                  size: 35,
+                  size: 30,
+                  color: Colors.white,
                 )),
           ],
         ),

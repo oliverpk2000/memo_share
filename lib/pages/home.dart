@@ -85,7 +85,8 @@ class _HomeState extends State<Home> {
                 tooltip: sortLabel,
                 icon: const Icon(
                   Icons.abc,
-                  size: 35,
+                  size: 30,
+                  color: Colors.white,
                 )),
 
             IconButton(
@@ -107,7 +108,8 @@ class _HomeState extends State<Home> {
                 tooltip: dateLabel,
                 icon: const Icon(
                   Icons.date_range,
-                  size: 35,
+                  size: 30,
+                  color: Colors.white,
                 )),
 
             IconButton(
@@ -142,7 +144,7 @@ class _HomeState extends State<Home> {
                 icon: const Icon(
                   Icons.star,
                   color: Colors.orange,
-                  size: 35,
+                  size: 30,
                 )),
             IconButton(
                 onPressed: () async {
@@ -159,7 +161,7 @@ class _HomeState extends State<Home> {
                 icon: const Icon(
                   Icons.favorite,
                   color: Colors.pinkAccent,
-                  size: 35,
+                  size: 30,
                 )),
             IconButton(
                 onPressed: () {
@@ -169,7 +171,7 @@ class _HomeState extends State<Home> {
                 icon: const Icon(
                   Icons.person,
                   color: Colors.white,
-                  size: 35,
+                  size: 30,
                 )),
           ],
           //TODO Link to Hub

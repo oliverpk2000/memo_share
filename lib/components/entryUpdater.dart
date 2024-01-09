@@ -182,7 +182,8 @@ class _EntryUpdaterState extends State<EntryUpdater> {
                           var service = IdService();
                           await service.init();
 
-                          entry = Entry.withNewID(
+                          entry = Entry(
+                            id: entry!.id,
                               title: title,
                               content: content,
                               tags: tags,
@@ -190,7 +191,7 @@ class _EntryUpdaterState extends State<EntryUpdater> {
                               imageUrls: imageUrls,
                               created: DateTime.now(),
                               creatorId: uid,
-                              idService: service);
+                          );
 
                           await entryService.updateEntry(entry!, entry!.id);
                           UserService()
