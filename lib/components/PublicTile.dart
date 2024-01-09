@@ -7,12 +7,12 @@ class PublicTile extends StatefulWidget {
   const PublicTile(
       {super.key,
       required this.entry,
-      required this.alreadyLiked,
+      required this.icon,
       required this.like,
       required this.unlike});
 
   final Entry entry;
-  final bool alreadyLiked;
+  final IconData icon;
   final Function like;
   final Function unlike;
 
@@ -26,10 +26,6 @@ class _PublicTileState extends State<PublicTile> {
 
   @override
   void initState() {
-    if (widget.alreadyLiked) {
-      likedIcon = Icons.favorite;
-    }
-
     UserService().getUser(widget.entry.creatorId).then((value) {
       setState(() {
         username = value.username;
@@ -41,6 +37,10 @@ class _PublicTileState extends State<PublicTile> {
 
   @override
   Widget build(BuildContext context) {
+    if (likedIcon != widget.icon) {
+      likedIcon = widget.icon;
+    }
+
     return ListTile(
       title: Text(widget.entry.title),
       subtitle: Text("Erstellt von $username"),
@@ -63,7 +63,7 @@ class _PublicTileState extends State<PublicTile> {
                 tooltip: likedIcon == Icons.star_border
                     ? "Like hinzufügen"
                     : "Like entfernen",
-                icon: Icon(likedIcon)),
+                icon: Icon(likedIcon, color: Colors.pinkAccent,)),
           ],
         ),
       ),

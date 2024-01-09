@@ -69,36 +69,6 @@ class _LoginState extends State<Login> {
                   Navigator.of(context).pushNamed("/register");
                 },
                 child: const Text('Registrieren')),
-
-            FloatingActionButton(
-              backgroundColor: Colors.red,
-                heroTag: "image",
-                onPressed: () async {
-                print("noch da");
-                FilePickerResult? result;
-                if (UniversalPlatform.isWeb) {
-                  result = await FilePickerWeb.platform.pickFiles(
-                    allowMultiple: true,
-                    type: FileType.custom,
-                      allowedExtensions: ["png", "jpg", "jpeg"]);
-
-                } else {
-                  result = await FilePicker.platform.pickFiles(
-                      allowMultiple: true,
-                      type: FileType.custom,
-                      allowedExtensions: ["png", "jpg", "jpeg"]);
-                }
-
-                if (result != null) {
-                  var storageRef = FirebaseStorage.instance.ref("upload/1${result.files.first.name}");
-                  await storageRef.putData(result.files.first.bytes!);
-                  print(await storageRef.getDownloadURL());
-
-                } else {
-                  print("Abgebrochen");
-                }
-
-                }),
           ],
         ));
   }

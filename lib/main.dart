@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:memo_share/components/entryEditor.dart';
 import 'package:memo_share/pages/entryPage.dart';
-import 'package:memo_share/pages/hub.dart';
+import 'package:memo_share/pages/Hub.dart';
 import 'package:memo_share/pages/userprofile.dart';
 import 'package:memo_share/pages/favorites.dart';
 import 'package:memo_share/pages/liked.dart';

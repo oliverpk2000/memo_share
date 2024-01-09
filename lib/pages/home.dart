@@ -1,7 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:memo_share/components/createdTile.dart';
+import 'package:memo_share/components/CreatedTile.dart';
 import 'package:memo_share/domain/user.dart';
 import 'package:memo_share/services/EntryService.dart';
 import 'package:memo_share/services/UserService.dart';
