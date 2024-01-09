@@ -163,7 +163,7 @@ class _HomeState extends State<Home> {
                 )),
             IconButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, "/profile", arguments: user.id);
+                  Navigator.pushNamed(context, "/profile", arguments: user);
                 },
                 tooltip: "Profil",
                 icon: const Icon(
