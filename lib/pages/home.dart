@@ -1,7 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:memo_share/components/createdTile.dart';
+import 'package:memo_share/components/CreatedTile.dart';
 import 'package:memo_share/domain/user.dart';
 import 'package:memo_share/services/EntryService.dart';
 import 'package:memo_share/services/UserService.dart';
@@ -85,7 +85,8 @@ class _HomeState extends State<Home> {
                 tooltip: sortLabel,
                 icon: const Icon(
                   Icons.abc,
-                  size: 35,
+                  size: 30,
+                  color: Colors.white,
                 )),
 
             IconButton(
@@ -107,7 +108,8 @@ class _HomeState extends State<Home> {
                 tooltip: dateLabel,
                 icon: const Icon(
                   Icons.date_range,
-                  size: 35,
+                  size: 30,
+                  color: Colors.white,
                 )),
 
             IconButton(
@@ -142,7 +144,7 @@ class _HomeState extends State<Home> {
                 icon: const Icon(
                   Icons.star,
                   color: Colors.orange,
-                  size: 35,
+                  size: 30,
                 )),
             IconButton(
                 onPressed: () async {
@@ -159,7 +161,7 @@ class _HomeState extends State<Home> {
                 icon: const Icon(
                   Icons.favorite,
                   color: Colors.pinkAccent,
-                  size: 35,
+                  size: 30,
                 )),
             IconButton(
                 onPressed: () {
@@ -169,7 +171,7 @@ class _HomeState extends State<Home> {
                 icon: const Icon(
                   Icons.person,
                   color: Colors.white,
-                  size: 35,
+                  size: 30,
                 )),
           ],
           //TODO Link to Hub
@@ -204,6 +206,7 @@ class _HomeState extends State<Home> {
                                       : Icons.star_border,
                                   favorite: favoriteCreated,
                                   unfavorite: unfavoriteCreated,
+                                  update: update,
                                 ),
                               ));
                         }))
@@ -213,7 +216,7 @@ class _HomeState extends State<Home> {
           onPressed: () async {
             loading = true;
             await Navigator.pushNamed(context, "/editor",
-                arguments: {"uid": user.id});
+                arguments: user.id);
 
             getUser(uid).whenComplete(() {
               setState(() {
@@ -231,7 +234,10 @@ class _HomeState extends State<Home> {
   }
 
   deleteCreated(entryId) async {
-    loading = true;
+    setState(() {
+      loading = true;
+    });
+
     await EntryService().deleteEntry(entryId);
     await UserService().deleteCreated(entryId, uid);
     getUser(uid).whenComplete(() {
@@ -242,7 +248,10 @@ class _HomeState extends State<Home> {
   }
 
   unfavoriteCreated(entryId) async {
-    loading = true;
+    setState(() {
+      loading = true;
+    });
+
     await UserService().deleteFavorite(entryId, uid);
     getUser(uid).whenComplete(() {
       setState(() {
@@ -252,12 +261,28 @@ class _HomeState extends State<Home> {
   }
 
   favoriteCreated(entryId) async {
-    loading = true;
+    setState(() {
+      loading = true;
+    });
+
     await UserService().addToFavorite(entryId, uid);
     getUser(uid).whenComplete(() {
       setState(() {
         loading = false;
       });
+    });
+  }
+
+  update(int uid) {
+    setState(() {
+      loading = true;
+    });
+
+    getUser(uid)
+        .whenComplete(() {
+          setState(() {
+            loading = false;
+          });
     });
   }
 }

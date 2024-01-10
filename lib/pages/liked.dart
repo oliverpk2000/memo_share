@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:memo_share/components/likedTile.dart';
+import 'package:memo_share/components/LikedTile.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../domain/entry.dart';
@@ -70,7 +70,8 @@ class _FavoritesState extends State<Liked> {
                 tooltip: sortLabel,
                 icon: const Icon(
                   Icons.abc,
-                  size: 35,
+                  size: 30,
+                  color: Colors.white,
                 )),
 
             IconButton(
@@ -92,7 +93,8 @@ class _FavoritesState extends State<Liked> {
                 tooltip: dateLabel,
                 icon: const Icon(
                   Icons.date_range,
-                  size: 35,
+                  size: 30,
+                  color: Colors.white,
                 )),
           ],
         ),

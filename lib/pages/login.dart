@@ -6,7 +6,7 @@ import 'package:memo_share/services/UserService.dart';
 import '../domain/user.dart';
 
 class Login extends StatefulWidget {
-  const Login({super.key});
+  const Login({super.key, required String title});
 
   @override
   State<Login> createState() => _LoginState();
@@ -64,7 +64,7 @@ class _LoginState extends State<Login> {
                 onPressed: () {
                   Navigator.of(context).pushNamed("/register");
                 },
-                child: const Text('Registrieren'))
+                child: const Text('Registrieren')),
           ],
         ));
   }

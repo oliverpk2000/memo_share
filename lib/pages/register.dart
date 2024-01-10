@@ -8,7 +8,7 @@ import '../components/userForm.dart';
 import '../domain/user.dart';
 
 class Register extends StatefulWidget {
-  const Register({super.key});
+  const Register({super.key, required String title});
 
   @override
   State<Register> createState() => _RegisterState();
