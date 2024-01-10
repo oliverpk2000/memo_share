@@ -150,6 +150,7 @@ class _EntryUpdaterState extends State<EntryUpdater> {
                       .map((e) => Flexible(
                             fit: FlexFit.loose,
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(e),
                                 IconButton(

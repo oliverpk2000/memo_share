@@ -108,7 +108,7 @@ class _UserprofileState extends State<Userprofile> {
                 padding: const EdgeInsets.symmetric(horizontal: 200, vertical: 20),
                 child: TextField(
                   decoration: const InputDecoration(
-                    hintText: "New Username",
+                    hintText: "Neuer Username",
                   ),
                   onChanged: (newUsername) {
                     setState(() {
@@ -118,7 +118,8 @@ class _UserprofileState extends State<Userprofile> {
                 ),
               ),
               TextButton(
-                  onPressed: () {
+                style: const ButtonStyle(),
+                  onPressed: username.isEmpty ? null : () {
                     setState(() {
                       loading = true;
                     });
@@ -149,7 +150,8 @@ class _UserprofileState extends State<Userprofile> {
                 ),
               ),
               TextButton(
-                  onPressed: () {
+                style: const ButtonStyle(),
+                  onPressed: password.isEmpty ? null : () {
                     setState(() {
                       loading = true;
                     });
