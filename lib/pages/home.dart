@@ -165,7 +165,7 @@ class _HomeState extends State<Home> {
                 )),
             IconButton(
                 onPressed: () async {
-                  await Navigator.pushNamed(context, "/profile", arguments: user);
+                  await Navigator.pushNamed(context, "/profile", arguments: {"user": user});
                   update(uid);
                 },
                 tooltip: "Profil",

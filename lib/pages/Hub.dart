@@ -114,8 +114,8 @@ class _HubState extends State<Hub> {
         ),
         body: otherEntries.isEmpty
             ? const Center(child: Text("Keine Einträge gefunden"))
-            : Flex(direction: Axis.horizontal, children: [
-                Expanded(
+            : Flex(direction: Axis.vertical, children: [
+                Flexible(
                     child: ListView.builder(
                         itemCount: otherEntries.length,
                         itemBuilder: (context, index) {
