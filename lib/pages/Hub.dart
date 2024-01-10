@@ -68,6 +68,7 @@ class _HubState extends State<Hub> {
           backgroundColor: Colors.green,
           actions: [
             IconButton(
+                tooltip: "Suchen",
                 onPressed: () {
                   if (searchMode) {
                     filterTitle(query.text);
@@ -83,18 +84,18 @@ class _HubState extends State<Hub> {
                   size: 30,
                 )),
             IconButton(
+                tooltip: "Suche abbrechen",
                 onPressed: () {
                   setState(() {
                     loading = true;
                   });
                   query.text = "";
-                  getOtherEntries().whenComplete(()  {
+                  getOtherEntries().whenComplete(() {
                     setState(() {
                       loading = false;
                       searchMode = false;
                     });
                   });
-
                 },
                 icon: const Icon(
                   Icons.cancel_rounded,
@@ -102,6 +103,7 @@ class _HubState extends State<Hub> {
                   size: 30,
                 )),
             IconButton(
+                tooltip: "Tag filtern",
                 onPressed: () {
                   showModalBottomSheet(
                       context: context,
@@ -249,8 +251,7 @@ class _HubState extends State<Hub> {
 
     getOtherEntries().whenComplete(() {
       otherEntries = otherEntries
-          .where(
-              (element) =>
+          .where((element) =>
               element.title.toLowerCase().contains(title.toLowerCase()))
           .toList();
       setState(() {
@@ -260,3 +261,4 @@ class _HubState extends State<Hub> {
     });
   }
 }
+//FINISH

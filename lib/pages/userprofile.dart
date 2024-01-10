@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +31,8 @@ class _UserprofileState extends State<Userprofile> {
 
   @override
   void didChangeDependencies() {
-    pageData = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    pageData =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     other = pageData['other'] ?? false;
     user = pageData['user'];
     current = pageData['current'] ?? user.id;
@@ -41,9 +44,7 @@ class _UserprofileState extends State<Userprofile> {
 
       print(user);
 
-      EntryService()
-      .getEntriesToId(user.created)
-      .then((value) {
+      EntryService().getEntriesToId(user.created).then((value) {
         userEntries = value.where((element) => !element.private).toList();
         print(userEntries);
         getLiked(current);
@@ -66,114 +67,132 @@ class _UserprofileState extends State<Userprofile> {
         ),
         body: Center(
           child: Column(
-            children: other ? [
-              Padding(
-                padding: const EdgeInsets.all(50.0),
-                child: Text("Username: ${user.username}", style: const TextStyle(fontSize: 30),),
-              ),
-              ListView.builder(
-                  itemCount: userEntries.length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    final entry = userEntries.elementAt(index);
+            children: other
+                ? [
+                    Padding(
+                      padding: const EdgeInsets.all(50.0),
+                      child: Text(
+                        "Username: ${user.username}",
+                        style: const TextStyle(fontSize: 30),
+                      ),
+                    ),
+                    ListView.builder(
+                        itemCount: userEntries.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          final entry = userEntries.elementAt(index);
 
-                    return GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, "/entry",
-                              arguments: {"id": entry.id, "uid": current});
+                          return GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(context, "/entry",
+                                    arguments: {
+                                      "id": entry.id,
+                                      "uid": current
+                                    });
+                              },
+                              child: Container(
+                                  margin: const EdgeInsets.fromLTRB(
+                                      100.0, 10.0, 100.0, 10.0),
+                                  decoration: BoxDecoration(
+                                      border:
+                                          Border.all(color: Colors.blueAccent),
+                                      color: Colors.lightBlueAccent[100]),
+                                  child: PublicTile(
+                                      entry: entry,
+                                      icon: currentLiked.contains(entry.id)
+                                          ? Icons.favorite
+                                          : Icons.favorite_border,
+                                      like: like,
+                                      unlike: unlike)));
+                        }),
+                  ]
+                : [
+                    Text(
+                      "Username: ${user.username}",
+                      style: const TextStyle(fontSize: 30),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(20),
+                      child: Text('Username ändern:'),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 200, vertical: 20),
+                      child: TextField(
+                        decoration: const InputDecoration(
+                          hintText: "Neuer Username",
+                        ),
+                        onChanged: (newUsername) {
+                          setState(() {
+                            username = newUsername;
+                          });
                         },
-                        child: Container(
-                            margin: const EdgeInsets.fromLTRB(
-                                100.0, 10.0, 100.0, 10.0),
-                            decoration: BoxDecoration(
-                                border:
-                                Border.all(color: Colors.blueAccent),
-                                color: Colors.lightBlueAccent[100]),
-                            child: PublicTile(
-                                entry: entry,
-                                icon: currentLiked.contains(entry.id) ? Icons.favorite : Icons.favorite_border,
-                                like: like,
-                                unlike: unlike)));
-                  }),
-            ] : [
-              Text(
-                "Username: ${user.username}",
-                style: const TextStyle(fontSize: 30),
-              ),
-              const Padding(
-                padding: EdgeInsets.all(20),
-                child: Text('Username ändern:'),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 200, vertical: 20),
-                child: TextField(
-                  decoration: const InputDecoration(
-                    hintText: "Neuer Username",
-                  ),
-                  onChanged: (newUsername) {
-                    setState(() {
-                      username = newUsername;
-                    });
-                  },
-                ),
-              ),
-              TextButton(
-                style: const ButtonStyle(),
-                  onPressed: username.isEmpty ? null : () {
-                    setState(() {
-                      loading = true;
-                    });
+                      ),
+                    ),
+                    TextButton(
+                        style: const ButtonStyle(),
+                        onPressed: username.isEmpty
+                            ? null
+                            : () {
+                                setState(() {
+                                  loading = true;
+                                });
 
-                    pushUsername(username, user.id).whenComplete(() {
-                      setState(() {
-                        loading = false;
-                      });
-                      Navigator.pop(context);
-                    });
-                  },
-                  child: const Text('Speichern')),
-              const Padding(
-                padding: EdgeInsets.all(20),
-                child: Text('Passwort ändern:'),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 200, vertical: 20),
-                child: TextField(
-                  decoration:
-                      const InputDecoration(hintText: "Neues Passwort"),
-                  obscureText: true,
-                  onChanged: (newPassword) {
-                    setState(() {
-                      password = newPassword;
-                    });
-                  },
-                ),
-              ),
-              TextButton(
-                style: const ButtonStyle(),
-                  onPressed: password.isEmpty ? null : () {
-                    setState(() {
-                      loading = true;
-                    });
+                                pushUsername(username, user.id)
+                                    .whenComplete(() {
+                                  setState(() {
+                                    loading = false;
+                                  });
+                                  Navigator.pop(context);
+                                });
+                              },
+                        child: const Text('Speichern')),
+                    const Padding(
+                      padding: EdgeInsets.all(20),
+                      child: Text('Passwort ändern:'),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 200, vertical: 20),
+                      child: TextField(
+                        decoration:
+                            const InputDecoration(hintText: "Neues Passwort"),
+                        obscureText: true,
+                        onChanged: (newPassword) {
+                          setState(() {
+                            password = newPassword;
+                          });
+                        },
+                      ),
+                    ),
+                    TextButton(
+                        style: const ButtonStyle(),
+                        onPressed: password.isEmpty
+                            ? null
+                            : () {
+                                setState(() {
+                                  loading = true;
+                                });
 
-                    pushPassword(password, user.id).whenComplete(() {
-                      setState(() {
-                        loading = false;
-                      });
-                    });
-                  },
-                  child: const Text('Speichern')),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                child: IconButton(
-                    onPressed: () =>
-                        Navigator.pushNamed(context, "/login"),
-                    icon: const Icon(
-                      Icons.logout,
-                      color: Colors.red,
-                    )),
-              )
-            ],
+                                pushPassword(password, user.id)
+                                    .whenComplete(() {
+                                  setState(() {
+                                    loading = false;
+                                  });
+                                });
+                              },
+                        child: const Text('Speichern')),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: IconButton(
+                          onPressed: () =>
+                              Navigator.pushNamed(context, "/login"),
+                          icon: const Icon(
+                            Icons.logout,
+                            color: Colors.red,
+                          )),
+                    )
+                  ],
           ),
         ),
       ),
@@ -196,7 +215,6 @@ class _UserprofileState extends State<Userprofile> {
 
     await UserService().addToLiked(entryId, current);
     getLiked(current);
-
   }
 
   unlike(entryId) async {
@@ -209,14 +227,14 @@ class _UserprofileState extends State<Userprofile> {
   }
 
   Future<void> getLiked(int uid) async {
-    UserService()
-        .getUser(current)
-        .then((value)  {
-       currentLiked = value.liked;
+    UserService().getUser(current).then((value) {
+      currentLiked = value.liked;
 
-       setState(() {
-         loading = false;
-       });
+      setState(() {
+        loading = false;
+      });
     });
   }
 }
+
+//FINISH
