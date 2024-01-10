@@ -88,7 +88,6 @@ class _HomeState extends State<Home> {
                   size: 30,
                   color: Colors.white,
                 )),
-
             IconButton(
                 onPressed: () {
                   setState(() {
@@ -111,7 +110,6 @@ class _HomeState extends State<Home> {
                   size: 30,
                   color: Colors.white,
                 )),
-
             IconButton(
                 onPressed: () async {
                   await Navigator.pushNamed(context, "/hub",
@@ -165,7 +163,8 @@ class _HomeState extends State<Home> {
                 )),
             IconButton(
                 onPressed: () async {
-                  await Navigator.pushNamed(context, "/profile", arguments: {"user": user});
+                  await Navigator.pushNamed(context, "/profile",
+                      arguments: {"user": user});
                   update(uid);
                 },
                 tooltip: "Profil",
@@ -175,7 +174,6 @@ class _HomeState extends State<Home> {
                   size: 30,
                 )),
           ],
-          //TODO Link to Hub
         ),
         body: created.isEmpty
             ? const Center(child: Text("Keine erstellten Einträge"))
@@ -213,11 +211,11 @@ class _HomeState extends State<Home> {
                         }))
               ]),
         floatingActionButton: FloatingActionButton(
+          tooltip: "Neuen Eintrag",
           backgroundColor: Colors.green,
           onPressed: () async {
             loading = true;
-            await Navigator.pushNamed(context, "/editor",
-                arguments: user.id);
+            await Navigator.pushNamed(context, "/editor", arguments: user.id);
 
             getUser(uid).whenComplete(() {
               setState(() {
@@ -279,11 +277,12 @@ class _HomeState extends State<Home> {
       loading = true;
     });
 
-    getUser(uid)
-        .whenComplete(() {
-          setState(() {
-            loading = false;
-          });
+    getUser(uid).whenComplete(() {
+      setState(() {
+        loading = false;
+      });
     });
   }
 }
+
+//FINISH
