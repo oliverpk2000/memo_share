@@ -17,7 +17,7 @@ class _EntryPageState extends State<EntryPage> {
 
   void getEntry(Map<String, int> data) {
     int id = data['id']!; //Arguments are passed from home
-    //TODO zum Profil wenn von wem anderen
+    int currentId = 0;
 
     try {
       EntryService().getEntry(id).then((value) {

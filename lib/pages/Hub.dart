@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:memo_share/components/PublicTile.dart';
+import 'package:memo_share/components/filterTag.dart';
 import 'package:memo_share/domain/entry.dart';
 import 'package:memo_share/services/EntryService.dart';
 import 'package:memo_share/services/UserService.dart';
@@ -60,6 +61,12 @@ class _HubState extends State<Hub> {
           actions: [
             IconButton(
                 onPressed: () {
+                  showModalBottomSheet(context: context, builder: (context) {
+                    return FilterTag(filterFunction: filterTag);
+                  });
+                }, icon: const Icon(Icons.filter_alt, color: Colors.white,)),
+            IconButton(
+                onPressed: () {
                   setState(() {
                     if (asc) {
                       otherEntries.sort((entry1, entry2) =>
@@ -106,7 +113,7 @@ class _HubState extends State<Hub> {
           ],
         ),
         body: otherEntries.isEmpty
-            ? const Center(child: Text("Keine anderen Einträge"))
+            ? const Center(child: Text("Keine Einträge gefunden"))
             : Flex(direction: Axis.horizontal, children: [
                 Expanded(
                     child: ListView.builder(
@@ -117,7 +124,7 @@ class _HubState extends State<Hub> {
                           return GestureDetector(
                               onTap: () {
                                 Navigator.pushNamed(context, "/entry",
-                                    arguments: {"id": entry.id});
+                                    arguments: {"id": entry.id, "uid": uid});
                               },
                               child: Container(
                                   margin: const EdgeInsets.fromLTRB(
@@ -138,7 +145,10 @@ class _HubState extends State<Hub> {
   }
 
   like(entryId) async {
-    loading = true;
+    setState(() {
+      loading = true;
+    });
+
     await UserService().addToLiked(entryId, uid);
     getOtherEntries().whenComplete(() {
       UserService().getUser(uid).then((value) {
@@ -152,7 +162,10 @@ class _HubState extends State<Hub> {
   }
 
   unlike(entryId) async {
-    loading = true;
+    setState(() {
+      loading = true;
+    });
+
     await UserService().deleteLiked(entryId, uid);
     getOtherEntries().whenComplete(() {
       UserService().getUser(uid).then((value) {
@@ -161,6 +174,19 @@ class _HubState extends State<Hub> {
         setState(() {
           loading = false;
         });
+      });
+    });
+  }
+
+  filterTag(String tag) {
+    setState(() {
+      loading = true;
+    });
+
+    getOtherEntries().whenComplete(() {
+      otherEntries = otherEntries.where((element) => element.tags.contains(tag)).toList();
+      setState(() {
+        loading = false;
       });
     });
   }

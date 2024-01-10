@@ -1,9 +1,8 @@
 import 'dart:convert';
-
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
-import 'package:memo_share/components/profileTile.dart';
 import 'package:memo_share/services/UserService.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../domain/user.dart';
 
@@ -15,47 +14,95 @@ class Userprofile extends StatefulWidget {
 }
 
 class _UserprofileState extends State<Userprofile> {
-  late User? user = ModalRoute.of(context)!.settings.arguments as User?;
+  late User user = ModalRoute.of(context)!.settings.arguments as User;
   var password = "";
   var username = "";
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('profile'),
-      ),
-      body: Center(
-        child: Column(
-          children: [
-            profileTile(user: user!),
-            const Text('change username:'),
-            TextField(
-              onChanged: (newUsername) {
-                setState(() {
-                  username = newUsername;
-                });
-              },
+    return ModalProgressHUD(
+      inAsyncCall: loading,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.black38,
+          title: const Text('Profil', style: TextStyle(color: Colors.white),),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 200, vertical: 50),
+          child: Center(
+            child: Column(
+              children: [
+                Text("Username: ${user.username}", style: const TextStyle(fontSize: 30),),
+
+                const Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Text('Username ändern:'),
+                ),
+
+                TextField(
+                  decoration: const InputDecoration(
+                    hintText: "New Username",
+                  ),
+                  onChanged: (newUsername) {
+                    setState(() {
+                      username = newUsername;
+                    });
+                  },
+                ),
+
+                TextButton(
+                    onPressed: () {
+                      setState(() {
+                        loading = true;
+                      });
+
+                      pushUsername(username, user.id)
+                      .whenComplete(() {
+                        setState(() {
+                          loading = false;
+                        });
+                        Navigator.pop(context);
+                      });
+                    },
+                    child: const Text('Speichern')),
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(0, 20, 0, 40),
+                  child: Text('Passwort ändern:'),
+                ),
+                TextField(
+                  decoration: const InputDecoration(
+                    hintText: "Neues Passwort"
+                  ),
+                  obscureText: true,
+                  onChanged: (newPassword) {
+                    setState(() {
+                      password = newPassword;
+                    });
+                  },
+                ),
+                TextButton(
+                    onPressed: () {
+                      setState(() {
+                        loading = true;
+                      });
+
+                      pushPassword(password, user.id).whenComplete(()  {
+                        setState(() {
+                          loading = false;
+                        });
+                      });
+                    },
+                    child: const Text('Speichern')),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: IconButton(onPressed: () => Navigator.pushNamed(context, "/login"), icon: const Icon(Icons.logout, color: Colors.red,)),
+                )
+
+              ],
             ),
-            TextButton(
-                onPressed: () {
-                  pushUsername(username, user!.id);
-                },
-                child: const Text('submit username changes')),
-            const Text('change password:'),
-            TextField(
-              onChanged: (newPassword) {
-                setState(() {
-                  password = newPassword;
-                });
-              },
-            ),
-            TextButton(
-                onPressed: () {
-                  pushPassword(password, user!.id);
-                },
-                child: const Text('submit password changes'))
-          ],
+          ),
         ),
       ),
     );
