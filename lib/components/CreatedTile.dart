@@ -54,7 +54,7 @@ class _CreatedTileState extends State<CreatedTile> {
               onPressed: () async {
                 await Navigator.pushNamed(context, "/updater",
                     arguments: widget.entry);
-                print("wtf");
+
                 widget.update(widget.entry.creatorId);
               },
               tooltip: "Editieren",
@@ -87,3 +87,5 @@ class _CreatedTileState extends State<CreatedTile> {
     );
   }
 }
+
+//FINISH

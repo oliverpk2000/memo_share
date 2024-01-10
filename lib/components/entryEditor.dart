@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, avoid_print
+
 import 'package:file_picker/_internal/file_picker_web.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -52,7 +54,12 @@ class _EntryEditorState extends State<EntryEditor> {
               children: [
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 10),
-                  child: Center(child: Text("Titel")),
+                  child: Center(
+                    child: Text(
+                      "Titel",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ),
                 ),
                 TextField(
                   decoration: const InputDecoration(
@@ -69,7 +76,11 @@ class _EntryEditorState extends State<EntryEditor> {
                 ),
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 10),
-                  child: Center(child: Text("Inhalt")),
+                  child: Center(
+                      child: Text(
+                    "Inhalt",
+                    style: TextStyle(fontSize: 20),
+                  )),
                 ),
                 TextField(
                   decoration: const InputDecoration(
@@ -86,7 +97,11 @@ class _EntryEditorState extends State<EntryEditor> {
                 ),
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 10),
-                  child: Center(child: Text("Tags")),
+                  child: Center(
+                      child: Text(
+                    "Tags",
+                    style: TextStyle(fontSize: 20),
+                  )),
                 ),
                 avaiableTags.isEmpty
                     ? const Center(child: Text("Keine Tags mehr verfügbar"))
@@ -157,7 +172,11 @@ class _EntryEditorState extends State<EntryEditor> {
                 ),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                  child: Center(child: Text("Privat")),
+                  child: Center(
+                      child: Text(
+                    "Privat",
+                    style: TextStyle(fontSize: 20),
+                  )),
                 ),
                 Checkbox(
                   value: private,
@@ -244,9 +263,11 @@ class _EntryEditorState extends State<EntryEditor> {
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                  child: Text(
-                    errorLabel,
-                    style: const TextStyle(color: Colors.red),
+                  child: Center(
+                    child: Text(
+                      errorLabel,
+                      style: const TextStyle(color: Colors.red),
+                    ),
                   ),
                 ),
                 Center(
@@ -303,3 +324,5 @@ class _EntryEditorState extends State<EntryEditor> {
     }
   }
 }
+
+//FINISH
