@@ -171,9 +171,21 @@ class _HubState extends State<Hub> {
                           final entry = otherEntries.elementAt(index);
 
                           return GestureDetector(
-                              onTap: () {
-                                Navigator.pushNamed(context, "/entry",
+                              onTap: () async {
+                                setState(() {
+                                  loading = true;
+                                });
+
+                                await Navigator.pushNamed(context, "/entry",
                                     arguments: {"id": entry.id, "uid": uid});
+
+                                var user = await UserService().getUser(uid);
+                                liked = user.liked;
+
+                                  setState(() {
+                                    loading = false;
+                                  });
+
                               },
                               child: Container(
                                   margin: const EdgeInsets.fromLTRB(
