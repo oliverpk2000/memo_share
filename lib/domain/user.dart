@@ -32,7 +32,6 @@ class User {
       required this.favorited,
       required this.created,
       required IdService idService}) {
-
     id = idService.newUserId();
   }
 

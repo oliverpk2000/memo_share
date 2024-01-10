@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:http/http.dart' as http;
 import 'package:memo_share/domain/user.dart';
 import 'dart:convert';
@@ -67,9 +69,9 @@ class UserService {
           body: json.encode(user.toJSON()));
 
       if (response.statusCode == 200) {
-        print("User Successfully Created");
+        print("User Successfully Created/Updated");
       } else {
-        throw "Something went wrong whlie creating User: $user";
+        throw "Something went wrong while creating User: $user";
       }
     } catch (error) {
       throw "Error while Creating user: $error";
@@ -95,7 +97,7 @@ class UserService {
       var user = await getUser(userId);
       user.created.add(entryId);
       await registerUser(user,
-          checkDoubleNames: false); // If anything except USername changes we dont have to check if there are duplicates
+          checkDoubleNames: false); // If anything except Username changes we don't have to check if there are duplicates
 
     } catch (error) {
       throw "User not found: $userId";
@@ -181,3 +183,5 @@ class UserService {
     }
   }
 }
+
+//FINISH
