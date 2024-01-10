@@ -11,7 +11,14 @@ class Entry {
   late int creatorId;
 
   static Entry defaultEntry = Entry(
-      id: 0, title: "", content: "", tags: [], private: false, imageUrls: [], created: DateTime.now(), creatorId: 0);
+      id: 0,
+      title: "",
+      content: "",
+      tags: [],
+      private: false,
+      imageUrls: [],
+      created: DateTime.now(),
+      creatorId: 0);
 
   Entry(
       {required this.id,
@@ -32,7 +39,6 @@ class Entry {
       required this.created,
       required this.creatorId,
       required IdService idService}) {
-
     id = idService.newEntryId();
   }
 
@@ -41,14 +47,14 @@ class Entry {
     List<dynamic> imageUrls = jsonMap['imageUrls'] ?? [];
 
     return Entry(
-      id: jsonMap['id'],
-      title: jsonMap['title'],
-      content: jsonMap['content'],
-      tags: List.castFrom(tags),
-      private: jsonMap['private'],
-      imageUrls: List.castFrom(imageUrls),
-      created: DateTime.parse(jsonMap['created']),
-      creatorId: jsonMap['creatorId']);
+        id: jsonMap['id'],
+        title: jsonMap['title'],
+        content: jsonMap['content'],
+        tags: List.castFrom(tags),
+        private: jsonMap['private'],
+        imageUrls: List.castFrom(imageUrls),
+        created: DateTime.parse(jsonMap['created']),
+        creatorId: jsonMap['creatorId']);
   }
 
   Map<String, dynamic> toJson() {
@@ -60,7 +66,7 @@ class Entry {
       'private': private,
       'imageUrls': imageUrls,
       'created': created.toString(),
-      'creatorId' : creatorId
+      'creatorId': creatorId
     };
   }
 
@@ -88,3 +94,4 @@ class Entry {
     }""";
   }
 }
+//FINISH

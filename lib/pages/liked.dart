@@ -73,7 +73,6 @@ class _FavoritesState extends State<Liked> {
                   size: 30,
                   color: Colors.white,
                 )),
-
             IconButton(
                 onPressed: () {
                   setState(() {
@@ -112,7 +111,6 @@ class _FavoritesState extends State<Liked> {
                                 Navigator.pushNamed(context, "/entry",
                                     arguments: {"id": entry.id});
                               },
-                              
                               child: Container(
                                 margin: const EdgeInsets.fromLTRB(
                                     100.0, 10.0, 100.0, 10.0),
@@ -130,3 +128,5 @@ class _FavoritesState extends State<Liked> {
     );
   }
 }
+
+//FINISH

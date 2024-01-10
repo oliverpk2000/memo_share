@@ -49,6 +49,7 @@ class _LoginState extends State<Login> {
                         created: [],
                         liked: [],
                         favorited: []);
+
                     var userWithData = await UserService().login(toLogin);
                     setState(() {
                       loading = false;
@@ -59,9 +60,11 @@ class _LoginState extends State<Login> {
                     setState(() {
                       errors = "";
                     });
+
                   } catch (error) {
                     setState(() {
                       errors = "Fehler: $error";
+                      loading = false;
                     });
                   }
                 },
@@ -70,14 +73,19 @@ class _LoginState extends State<Login> {
                 errors,
                 style: const TextStyle(color: Colors.red),
               ),
-              const Text("Keinen Account?"),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: Text("Keinen Account?", style: TextStyle(fontSize: 15),),
+              ),
               TextButton(
                   onPressed: () {
                     Navigator.of(context).pushNamed("/register");
                   },
-                  child: const Text('Registrieren')),
+                  child: const Text('Registrieren', style: TextStyle(fontSize: 15),)),
             ],
           )),
     );
   }
 }
+
+//FINISH

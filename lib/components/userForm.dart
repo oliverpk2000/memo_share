@@ -21,50 +21,64 @@ class _UserFormState extends State<UserForm> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(100.0, 10.0, 100.0, 0),
+      padding: const EdgeInsets.fromLTRB(0, 30.0, 0, 0),
       child: Center(
         child: Column(
-          children: <Widget> [
-            const Text('Username:'),
-            TextField(
-              controller: nameControler,
-              autofocus: true,
-              onChanged: (value) {
-                setState(() {
-                  username = value;
-                });
-              },
+          children: <Widget>[
+            const Text(
+              'Username:',
+              style: TextStyle(fontSize: 20),
             ),
-            const Padding(padding: EdgeInsets.all(10.0)),
-            const Text('Passwort:'),
-            TextField(
-              controller: passwordControler,
-              autofocus: true,
-              obscureText: true,
-              onChanged: (value) {
-                setState(() {
-                  password = value;
-                });
-              },
+            SizedBox(
+              width: 400,
+              child: TextField(
+                controller: nameControler,
+                autofocus: true,
+                onChanged: (newName) {
+                  setState(() {
+                    username = newName;
+                  });
+                },
+              ),
+            ),
+            const Padding(padding: EdgeInsets.all(20.0)),
+            const Text(
+              'Passwort:',
+              style: TextStyle(fontSize: 20),
+            ),
+            SizedBox(
+              width: 400,
+              child: TextField(
+                controller: passwordControler,
+                autofocus: true,
+                obscureText: true,
+                onChanged: (newPassword) {
+                  setState(() {
+                    password = newPassword;
+                  });
+                },
+              ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
+              padding: const EdgeInsets.symmetric(vertical: 30),
               child: TextButton(
-                style: const ButtonStyle(),
-                  onPressed: (username.isEmpty || password.isEmpty)
+                  style: const ButtonStyle(),
+                  onPressed: (username.isEmpty || password.isEmpty) //Validation
                       ? null
                       : () async {
-                    password = sha224.convert(utf8.encode(password)).toString();
-                    widget.loginUser(username, password);
+                          var hashed =
+                              sha224.convert(utf8.encode(password)).toString();
+                          widget.loginUser(nameControler.text, hashed);
 
-                    setState(() {
-                      username = "";
-                      password = "";
-                      nameControler.text = "";
-                      passwordControler.text = "";
-                    });
-                  },
-                  child: const Text("Einloggen")),
+                          setState(() {
+                            nameControler.text = ""; //Reset Text
+                            passwordControler.text = "";
+                          });
+                        },
+                  child: const Text(
+                    "Einloggen",
+                    style: TextStyle(fontSize: 15),
+                  )),
             )
           ],
         ),
@@ -72,3 +86,5 @@ class _UserFormState extends State<UserForm> {
     );
   }
 }
+
+//FINISH

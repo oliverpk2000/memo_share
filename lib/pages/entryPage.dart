@@ -32,7 +32,7 @@ class _EntryPageState extends State<EntryPage> {
         });
       });
     } catch (error) {
-      throw "ID does not exsist $id";
+      throw "ID does not exist $id";
     }
   }
 
@@ -71,13 +71,21 @@ class _EntryPageState extends State<EntryPage> {
                     Icons.info,
                     color: Colors.white,
                   )),
-
               if (currentId != entry.creatorId)
-                IconButton(onPressed: () async {
-                  var user = await UserService().getUser(entry.creatorId);
-                  Navigator.pushNamed(context, "/profile", arguments: {"user": user, "other": true, "current": currentId});
-                }, icon: const Icon(Icons.person, color: Colors.white,))
-
+                IconButton(
+                    tooltip: "User",
+                    onPressed: () async {
+                      var user = await UserService().getUser(entry.creatorId);
+                      Navigator.pushNamed(context, "/profile", arguments: {
+                        "user": user,
+                        "other": true,
+                        "current": currentId
+                      });
+                    },
+                    icon: const Icon(
+                      Icons.person,
+                      color: Colors.white,
+                    ))
             ],
           ),
           body: Center(
@@ -129,10 +137,10 @@ class _EntryPageState extends State<EntryPage> {
                   ),
                 ),
                 entry.imageUrls.isEmpty
-                    ? const Text("Keine Bilder zu diesem Beitrag hinzugefügt")
+                    ? const Text("Keine Bilder zu diesem Eintrag hinzugefügt")
                     : Expanded(
                         child: SizedBox(
-                          width: entry.imageUrls.length * 300,
+                          width: 600,
                           height: entry.imageUrls.length * 300,
                           child: ListView.builder(
                             itemCount: entry.imageUrls.length,
@@ -148,3 +156,4 @@ class _EntryPageState extends State<EntryPage> {
         ));
   }
 }
+//FINISH

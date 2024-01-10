@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:file_picker/_internal/file_picker_web.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -62,7 +64,7 @@ class _EntryUpdaterState extends State<EntryUpdater> {
               children: [
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 10),
-                  child: Center(child: Text("Titel")),
+                  child: Center(child: Text("Titel", style: TextStyle(fontSize: 20),)),
                 ),
                 TextFormField(
                   decoration: const InputDecoration(
@@ -81,7 +83,7 @@ class _EntryUpdaterState extends State<EntryUpdater> {
                 const Center(
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                    child: Text("Inhalt"),
+                    child: Text("Inhalt", style: TextStyle(fontSize: 20),),
                   ),
                 ),
                 TextFormField(
@@ -101,7 +103,7 @@ class _EntryUpdaterState extends State<EntryUpdater> {
                 const Center(
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                    child: Text("Tags"),
+                    child: Text("Tags", style: TextStyle(fontSize: 20),),
                   ),
                 ),
                 avaiableTags.isEmpty
@@ -173,7 +175,7 @@ class _EntryUpdaterState extends State<EntryUpdater> {
                 const Center(
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                    child: Text("Privat"),
+                    child: Text("Privat", style: TextStyle(fontSize: 20),),
                   ),
                 ),
                 Checkbox(
@@ -261,9 +263,11 @@ class _EntryUpdaterState extends State<EntryUpdater> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20),
-                  child: Text(
-                    errorLabel,
-                    style: const TextStyle(color: Colors.red),
+                  child: Center(
+                    child: Text(
+                      errorLabel,
+                      style: const TextStyle(color: Colors.red),
+                    ),
                   ),
                 ),
                 Center(
@@ -321,3 +325,5 @@ class _EntryUpdaterState extends State<EntryUpdater> {
     }
   }
 }
+
+//FINISH

@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:memo_share/domain/entry.dart';
@@ -16,18 +18,12 @@ class EntryService {
       );
 
       if (response.statusCode == 200) {
-        print("New Entry successfully created!");
+        print("New Entry successfully created/updated!");
       } else {
         throw "Something went wrong while creating Entry: $entry";
       }
     } catch (error) {
       throw "Error while creating: $error";
-    }
-  }
-
-  Future<void> addEntries(List<Entry> entries) async {
-    for (var entry in entries) {
-      await addEntry(entry);
     }
   }
 
@@ -85,7 +81,7 @@ class EntryService {
     var response = await http.delete(url);
 
     if (response.statusCode == 200) {
-      print("Entry Successdully deleted");
+      print("Entry Successfully deleted");
     } else {
       throw "Error while deleting ID: $id";
     }
@@ -111,6 +107,6 @@ class EntryService {
     var allEntries = await getAll();
     return allEntries.where((element) => !element.private).toList();
   }
-
-//TODO sort/filter
 }
+
+//FINISH

@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -8,8 +10,10 @@ class IdService {
       "https://memoshare-bde3c-default-rtdb.europe-west1.firebasedatabase.app/";
 
   Future<void> init() async {
-    var userResponse = await http.get(Uri.parse("$pathToDB/ids/latestUserId.json"));
-    var entryResponse = await http.get(Uri.parse("$pathToDB/ids/latestEntryId.json"));
+    var userResponse =
+        await http.get(Uri.parse("$pathToDB/ids/latestUserId.json"));
+    var entryResponse =
+        await http.get(Uri.parse("$pathToDB/ids/latestEntryId.json"));
     userId = int.parse(userResponse.body);
     entryId = int.parse(entryResponse.body);
   }
@@ -17,32 +21,25 @@ class IdService {
   int newEntryId() {
     entryId++;
 
-   http.patch(
-       Uri.parse("$pathToDB/ids.json"),
-       body: json.encode({"latestEntryId" : entryId})
-   );
+    http.patch(Uri.parse("$pathToDB/ids.json"),
+        body: json.encode({"latestEntryId": entryId}));
 
-   return entryId;
+    return entryId;
   }
 
   newUserId() {
     userId++;
-    print(json.encode({"latestUserId" : userId}));
 
-    print(userId);
-    http.patch(
-        Uri.parse("$pathToDB/ids.json"),
-        body: json.encode({"latestUserId" : userId})
-    );
+    http.patch(Uri.parse("$pathToDB/ids.json"),
+        body: json.encode({"latestUserId": userId}));
 
     return userId;
   }
 
   removeUserId() {
     userId--;
-    http.patch(
-        Uri.parse("$pathToDB/ids.json"),
-        body: json.encode({"latestUserId" : userId})
-    );
+    http.patch(Uri.parse("$pathToDB/ids.json"),
+        body: json.encode({"latestUserId": userId}));
   }
 }
+//FINISH
