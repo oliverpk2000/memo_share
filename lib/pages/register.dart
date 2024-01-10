@@ -1,12 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:memo_share/services/IdService.dart';
 import 'package:memo_share/services/UserService.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-
 import '../components/userForm.dart';
 import '../domain/user.dart';
 
@@ -71,22 +69,28 @@ class _RegisterState extends State<Register> {
                     setState(() {
                       errors = "Username existiert bereits";
                       service.removeUserId();
+                      loading = false;
                     });
                   }
                 },
               ),
               Text(
                 errors,
-                style: const TextStyle(color: Colors.red),
+                style: const TextStyle(color: Colors.red,),
               ),
-              const Text("Schon einen Account?"),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: Text("Schon einen Account?", style: TextStyle(fontSize: 15),),
+              ),
               TextButton(
                   onPressed: () {
                     Navigator.of(context).pushNamed("/login");
                   },
-                  child: const Text('Login')),
+                  child: const Text('Login', style: TextStyle(fontSize: 15),)),
             ],
           )),
     );
   }
 }
+
+//FINISH

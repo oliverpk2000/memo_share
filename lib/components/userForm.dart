@@ -21,7 +21,7 @@ class _UserFormState extends State<UserForm> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(700.0, 30.0, 700.0, 0),
+      padding: const EdgeInsets.fromLTRB(0, 30.0, 0, 0),
       child: Center(
         child: Column(
           children: <Widget>[
@@ -29,29 +29,35 @@ class _UserFormState extends State<UserForm> {
               'Username:',
               style: TextStyle(fontSize: 20),
             ),
-            TextField(
-              controller: nameControler,
-              autofocus: true,
-              onChanged: (newName) {
-                setState(() {
-                  username = newName;
-                });
-              },
+            SizedBox(
+              width: 400,
+              child: TextField(
+                controller: nameControler,
+                autofocus: true,
+                onChanged: (newName) {
+                  setState(() {
+                    username = newName;
+                  });
+                },
+              ),
             ),
             const Padding(padding: EdgeInsets.all(20.0)),
             const Text(
               'Passwort:',
               style: TextStyle(fontSize: 20),
             ),
-            TextField(
-              controller: passwordControler,
-              autofocus: true,
-              obscureText: true,
-              onChanged: (newPassword) {
-                setState(() {
-                  password = newPassword;
-                });
-              },
+            SizedBox(
+              width: 400,
+              child: TextField(
+                controller: passwordControler,
+                autofocus: true,
+                obscureText: true,
+                onChanged: (newPassword) {
+                  setState(() {
+                    password = newPassword;
+                  });
+                },
+              ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 30),
@@ -71,7 +77,7 @@ class _UserFormState extends State<UserForm> {
                         },
                   child: const Text(
                     "Einloggen",
-                    style: TextStyle(fontSize: 20),
+                    style: TextStyle(fontSize: 15),
                   )),
             )
           ],
