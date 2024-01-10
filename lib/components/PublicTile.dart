@@ -27,9 +27,11 @@ class _PublicTileState extends State<PublicTile> {
   @override
   void initState() {
     UserService().getUser(widget.entry.creatorId).then((value) {
-      setState(() {
-        username = value.username;
-      });
+      if (mounted) {
+        setState(() {
+          username = value.username;
+        });
+      }
     });
 
     super.initState();
@@ -60,7 +62,7 @@ class _PublicTileState extends State<PublicTile> {
                     }
                   });
                 },
-                tooltip: likedIcon == Icons.star_border
+                tooltip: likedIcon == Icons.favorite_border
                     ? "Like hinzufügen"
                     : "Like entfernen",
                 icon: Icon(likedIcon, color: Colors.pinkAccent,)),

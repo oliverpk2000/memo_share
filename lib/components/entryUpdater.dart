@@ -39,8 +39,7 @@ class _EntryUpdaterState extends State<EntryUpdater> {
       for (String tag in chosenTags) {
         avaiableTags.remove(tag);
       }
-      print(avaiableTags);
-      print(chosenTags);
+
       dropDownValue = avaiableTags.first;
       loading = false;
     });
@@ -79,9 +78,11 @@ class _EntryUpdaterState extends State<EntryUpdater> {
                     });
                   },
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                  child: Text("Inhalt"),
+                const Center(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                    child: Text("Inhalt"),
+                  ),
                 ),
                 TextFormField(
                   decoration: const InputDecoration(
@@ -97,9 +98,11 @@ class _EntryUpdaterState extends State<EntryUpdater> {
                     });
                   },
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                  child: Text("Tags"),
+                const Center(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                    child: Text("Tags"),
+                  ),
                 ),
                 avaiableTags.isEmpty
                     ? const Center(child: Text("Keine Tags mehr verfügbar"))
@@ -147,6 +150,7 @@ class _EntryUpdaterState extends State<EntryUpdater> {
                       .map((e) => Flexible(
                             fit: FlexFit.loose,
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(e),
                                 IconButton(
@@ -166,9 +170,11 @@ class _EntryUpdaterState extends State<EntryUpdater> {
                           ))
                       .toList(),
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                  child: Text("Privat"),
+                const Center(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                    child: Text("Privat"),
+                  ),
                 ),
                 Checkbox(
                   value: private,
@@ -283,6 +289,8 @@ class _EntryUpdaterState extends State<EntryUpdater> {
                                 created: DateTime.now(),
                                 creatorId: uid,
                               );
+
+                              print(entry);
 
                               await entryService.updateEntry(entry, entry.id);
                               UserService()

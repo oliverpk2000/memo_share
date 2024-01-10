@@ -50,7 +50,7 @@ class _UserFormState extends State<UserForm> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: TextButton(
-                style: ButtonStyle(),
+                style: const ButtonStyle(),
                   onPressed: (username.isEmpty || password.isEmpty)
                       ? null
                       : () async {

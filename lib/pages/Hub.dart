@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:memo_share/components/PublicTile.dart';
+import 'package:memo_share/components/filterTag.dart';
 import 'package:memo_share/domain/entry.dart';
 import 'package:memo_share/services/EntryService.dart';
 import 'package:memo_share/services/UserService.dart';
@@ -21,6 +22,8 @@ class _HubState extends State<Hub> {
   String sortLabel = "Aufsteigend";
   bool ascDate = true;
   String dateLabel = "Neuste";
+  TextEditingController query = TextEditingController();
+  bool searchMode = false;
 
   Future<void> getOtherEntries() async {
     var entries = await EntryService().getPublic();
@@ -51,13 +54,65 @@ class _HubState extends State<Hub> {
       inAsyncCall: loading,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text(
-            "MemoShare-Hub",
-            style: TextStyle(color: Colors.white),
-          ),
+          title: searchMode
+              ? TextField(
+                  controller: query,
+                  decoration: const InputDecoration(hintText: "Suche"),
+                )
+              : const Text(
+                  "MemoShare-Hub",
+                  style: TextStyle(color: Colors.white),
+                ),
+          toolbarHeight: 75,
           centerTitle: true,
           backgroundColor: Colors.green,
           actions: [
+            IconButton(
+                onPressed: () {
+                  if (searchMode) {
+                    filterTitle(query.text);
+                  } else {
+                    setState(() {
+                      searchMode = true;
+                    });
+                  }
+                },
+                icon: const Icon(
+                  Icons.search,
+                  color: Colors.white,
+                  size: 30,
+                )),
+            IconButton(
+                onPressed: () {
+                  setState(() {
+                    loading = true;
+                  });
+                  query.text = "";
+                  getOtherEntries().whenComplete(()  {
+                    setState(() {
+                      loading = false;
+                      searchMode = false;
+                    });
+                  });
+
+                },
+                icon: const Icon(
+                  Icons.cancel_rounded,
+                  color: Colors.white,
+                  size: 30,
+                )),
+            IconButton(
+                onPressed: () {
+                  showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return FilterTag(filterFunction: filterTag);
+                      });
+                },
+                icon: const Icon(
+                  Icons.filter_alt,
+                  color: Colors.white,
+                )),
             IconButton(
                 onPressed: () {
                   setState(() {
@@ -80,7 +135,6 @@ class _HubState extends State<Hub> {
                   size: 30,
                   color: Colors.white,
                 )),
-
             IconButton(
                 onPressed: () {
                   setState(() {
@@ -106,9 +160,9 @@ class _HubState extends State<Hub> {
           ],
         ),
         body: otherEntries.isEmpty
-            ? const Center(child: Text("Keine anderen Einträge"))
-            : Flex(direction: Axis.horizontal, children: [
-                Expanded(
+            ? const Center(child: Text("Keine Einträge gefunden"))
+            : Flex(direction: Axis.vertical, children: [
+                Flexible(
                     child: ListView.builder(
                         itemCount: otherEntries.length,
                         itemBuilder: (context, index) {
@@ -117,7 +171,7 @@ class _HubState extends State<Hub> {
                           return GestureDetector(
                               onTap: () {
                                 Navigator.pushNamed(context, "/entry",
-                                    arguments: {"id": entry.id});
+                                    arguments: {"id": entry.id, "uid": uid});
                               },
                               child: Container(
                                   margin: const EdgeInsets.fromLTRB(
@@ -128,7 +182,9 @@ class _HubState extends State<Hub> {
                                       color: Colors.lightBlueAccent[100]),
                                   child: PublicTile(
                                       entry: entry,
-                                      icon: liked.contains(entry.id) ? Icons.favorite : Icons.favorite_border,
+                                      icon: liked.contains(entry.id)
+                                          ? Icons.favorite
+                                          : Icons.favorite_border,
                                       like: like,
                                       unlike: unlike)));
                         }))
@@ -138,7 +194,10 @@ class _HubState extends State<Hub> {
   }
 
   like(entryId) async {
-    loading = true;
+    setState(() {
+      loading = true;
+    });
+
     await UserService().addToLiked(entryId, uid);
     getOtherEntries().whenComplete(() {
       UserService().getUser(uid).then((value) {
@@ -152,7 +211,10 @@ class _HubState extends State<Hub> {
   }
 
   unlike(entryId) async {
-    loading = true;
+    setState(() {
+      loading = true;
+    });
+
     await UserService().deleteLiked(entryId, uid);
     getOtherEntries().whenComplete(() {
       UserService().getUser(uid).then((value) {
@@ -161,6 +223,39 @@ class _HubState extends State<Hub> {
         setState(() {
           loading = false;
         });
+      });
+    });
+  }
+
+  filterTag(String tag) {
+    setState(() {
+      loading = true;
+    });
+
+    getOtherEntries().whenComplete(() {
+      otherEntries =
+          otherEntries.where((element) => element.tags.contains(tag)).toList();
+      setState(() {
+        loading = false;
+        searchMode = false;
+      });
+    });
+  }
+
+  filterTitle(String title) {
+    setState(() {
+      loading = true;
+    });
+
+    getOtherEntries().whenComplete(() {
+      otherEntries = otherEntries
+          .where(
+              (element) =>
+              element.title.toLowerCase().contains(title.toLowerCase()))
+          .toList();
+      setState(() {
+        loading = false;
+        searchMode = false;
       });
     });
   }

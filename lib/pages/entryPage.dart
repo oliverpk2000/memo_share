@@ -1,5 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:memo_share/services/EntryService.dart';
+import 'package:memo_share/services/UserService.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../domain/entry.dart';
@@ -14,14 +17,15 @@ class EntryPage extends StatefulWidget {
 class _EntryPageState extends State<EntryPage> {
   late Entry entry = Entry.defaultEntry;
   var loading = true;
+  late int currentId = 0;
 
   void getEntry(Map<String, int> data) {
     int id = data['id']!; //Arguments are passed from home
-    //TODO zum Profil wenn von wem anderen
 
     try {
       EntryService().getEntry(id).then((value) {
         entry = value;
+        currentId = data['uid'] ?? entry.creatorId;
 
         setState(() {
           loading = false;
@@ -67,6 +71,13 @@ class _EntryPageState extends State<EntryPage> {
                     Icons.info,
                     color: Colors.white,
                   )),
+
+              if (currentId != entry.creatorId)
+                IconButton(onPressed: () async {
+                  var user = await UserService().getUser(entry.creatorId);
+                  Navigator.pushNamed(context, "/profile", arguments: {"user": user, "other": true, "current": currentId});
+                }, icon: const Icon(Icons.person, color: Colors.white,))
+
             ],
           ),
           body: Center(
