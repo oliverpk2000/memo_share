@@ -25,18 +25,16 @@ class _FavoritesState extends State<Favorites> {
   @override
   void didChangeDependencies() {
     late Map<String, dynamic> pageData =
-    ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     idList = pageData["idList"];
     uid = pageData["uid"];
 
-    EntryService()
-      .getEntriesToId(idList)
-      .then((value) {
-        entries = value;
+    EntryService().getEntriesToId(idList).then((value) {
+      entries = value;
 
-        setState(() {
-          loading = false;
-        });
+      setState(() {
+        loading = false;
+      });
     });
 
     super.didChangeDependencies();
@@ -73,7 +71,6 @@ class _FavoritesState extends State<Favorites> {
                   size: 30,
                   color: Colors.white,
                 )),
-
             IconButton(
                 onPressed: () {
                   setState(() {
@@ -98,34 +95,36 @@ class _FavoritesState extends State<Favorites> {
                 )),
           ],
         ),
-          body: entries.isEmpty
-              ? const Center(child: Text("Keine favorisierten Einträge"))
-              : Flex(direction: Axis.horizontal, children: [
-            Expanded(
-                child: ListView.builder(
-                    itemCount: entries.length,
-                    itemBuilder: (context, index) {
-                      final entry = entries.elementAt(index);
+        body: entries.isEmpty
+            ? const Center(child: Text("Keine favorisierten Einträge"))
+            : Flex(direction: Axis.horizontal, children: [
+                Expanded(
+                    child: ListView.builder(
+                        itemCount: entries.length,
+                        itemBuilder: (context, index) {
+                          final entry = entries.elementAt(index);
 
-                      return GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(context, "/entry",
-                                arguments: {"id": entry.id});
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.fromLTRB(
-                                100.0, 10.0, 100.0, 10.0),
-                            decoration: BoxDecoration(
-                                border:
-                                Border.all(color: Colors.blueAccent),
-                                color: Colors.lightBlueAccent[100]),
-                            child: FavoriteTile(
-                              entry: entry,
-                            ),
-                          ));
-                    }))
-          ]),
+                          return GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(context, "/entry",
+                                    arguments: {"id": entry.id});
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.fromLTRB(
+                                    100.0, 10.0, 100.0, 10.0),
+                                decoration: BoxDecoration(
+                                    border:
+                                        Border.all(color: Colors.blueAccent),
+                                    color: Colors.lightBlueAccent[100]),
+                                child: FavoriteTile(
+                                  entry: entry,
+                                ),
+                              ));
+                        }))
+              ]),
       ),
     );
   }
 }
+
+//FINISH
