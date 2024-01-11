@@ -58,6 +58,9 @@ class _HubState extends State<Hub> {
               ? TextField(
                   controller: query,
                   decoration: const InputDecoration(hintText: "Suche"),
+            onSubmitted: (value){
+                    filterTitle(value);
+            },
                 )
               : const Text(
                   "MemoShare-Hub",
@@ -182,10 +185,9 @@ class _HubState extends State<Hub> {
                                 var user = await UserService().getUser(uid);
                                 liked = user.liked;
 
-                                  setState(() {
-                                    loading = false;
-                                  });
-
+                                setState(() {
+                                  loading = false;
+                                });
                               },
                               child: Container(
                                   margin: const EdgeInsets.fromLTRB(

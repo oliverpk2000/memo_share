@@ -101,7 +101,9 @@ class _EntryPageState extends State<EntryPage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 50.0),
-                  child: Text(entry.content),
+                  child: Text(entry.content, style: const TextStyle(
+                      fontSize: 20.0
+                  )),
                 ),
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 60.0),

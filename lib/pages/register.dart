@@ -38,6 +38,7 @@ class _RegisterState extends State<Register> {
           body: Column(
             children: <Widget>[
               UserForm(
+                register: true,
                 loginUser: (username, password) async {
                   setState(() {
                     loading = true;

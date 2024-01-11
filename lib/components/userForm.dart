@@ -4,10 +4,10 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 
 class UserForm extends StatefulWidget {
-  const UserForm({super.key, required this.loginUser});
+  const UserForm({super.key, required this.loginUser, required this.register});
 
   final void Function(String, String) loginUser;
-
+  final bool register;
   @override
   State<UserForm> createState() => _UserFormState();
 }
@@ -75,7 +75,7 @@ class _UserFormState extends State<UserForm> {
                             passwordControler.text = "";
                           });
                         },
-                  child: const Text(
+                  child: (widget.register) ? const Text("registrieren"):const Text(
                     "Einloggen",
                     style: TextStyle(fontSize: 15),
                   )),
