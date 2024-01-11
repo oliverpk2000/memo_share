@@ -36,6 +36,7 @@ class _LoginState extends State<Login> {
           body: Column(
             children: <Widget>[
               UserForm(
+                register:false,
                 loginUser: (username, password) async {
                   setState(() {
                     loading = true;
